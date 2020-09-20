@@ -23,6 +23,10 @@ export default class StripeService extends Service {
     return getWithDefault (ENV, 'stripe.version');
   }
 
+  createElement (type, options) {
+    return this._stripe.elements ().create (type, options);
+  }
+
   createToken (type, options) {
     return this._stripe.createToken (type, options);
   }

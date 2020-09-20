@@ -1,0 +1,13 @@
+<div class="stripe-card-element">
+  {{#if @label}}
+    <label class="stripe-card-element__label">{{@label}}
+      <div class="stripe-card-element__element" {{did-insert this.didInsert}} />
+    </label>
+  {{else}}
+    <div class="stripe-card-element__element" {{did-insert this.didInsert}} />
+  {{/if}}
+
+  {{#if this.errorMessage}}
+    <div class="stripe-card-element__error-message">{{this.errorMessage}}</div>
+  {{/if}}
+</div>
