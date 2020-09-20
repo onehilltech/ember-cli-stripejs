@@ -1,0 +1,21 @@
+<h1>Stripe Card Element</h1>
+
+<div>
+  <StripeCardElement @change={{this.change}}
+                     @clear={{this.clear}}
+                     @token={{hash create=this.create callback=this.created}}/>
+  <div class="actions">
+    <button {{on "click" this.doClear}}>Clear</button>
+    <button {{on "click" this.doCreateToken}}>Create token</button>
+  </div>
+</div>
+
+{{#if this.token.isValid}}
+  <h3>Stripe Card Token</h3>
+  <table>
+    <tr><td>Id:</td><td>{{this.token.id}}</td></tr>
+    <tr><td>Last 4 digits:</td><td>{{this.token.last4}}</td></tr>
+    <tr><td>Brand:</td><td>{{this.token.brand}}</td></tr>
+  </table>
+
+{{/if}}
