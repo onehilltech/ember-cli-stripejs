@@ -1,0 +1,29 @@
+/* global Stripe */
+
+import Service from '@ember/service';
+import { getOwner } from '@ember/application';
+import { get, getWithDefault } from '@ember/object';
+
+export default class StripeService extends Service {
+  init () {
+    super.init (...arguments);
+
+    this._stripe = new Stripe (this.publishableKey, {
+      apiVersion: this.apiVersion
+    });
+  }
+
+  get publishableKey () {
+    const ENV = getOwner (this).resolveRegistration ('config:environment');
+    return get (ENV, 'stripe.publishableKey');
+  }
+
+  get apiVersion () {
+    const ENV = getOwner (this).resolveRegistration ('config:environment');
+    return getWithDefault (ENV, 'stripe.version');
+  }
+
+  createToken (type, options) {
+    return this._stripe.createToken (type, options);
+  }
+}
