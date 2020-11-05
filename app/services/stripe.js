@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/services/stripe';
+export { default } from '@onehilltech/ember-cli-stripejs/services/stripe';
