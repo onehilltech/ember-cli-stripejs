@@ -1,13 +1,14 @@
 {
-  "name": "ember-cli-stripejs",
+  "name": "@onehilltech/ember-cli-stripejs",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "The ember-cli addon for Stripe",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "stripe"
   ],
-  "repository": "",
-  "license": "MIT",
-  "author": "",
+  "repository": "onehilltech/ember-cli-stripejs",
+  "license": "Apache",
+  "author": "One Hill Technologies, LLC",
   "directories": {
     "doc": "doc",
     "test": "tests"
