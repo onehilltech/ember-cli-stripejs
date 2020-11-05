@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/components/stripe-card-element';
+export { default } from '@onehilltech/ember-cli-stripejs/components/stripe-card-element';

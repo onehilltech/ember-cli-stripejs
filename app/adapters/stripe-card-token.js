@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/adapters/stripe-card-token';
+export { default } from '@onehilltech/ember-cli-stripejs/adapters/stripe-card-token';
