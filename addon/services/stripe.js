@@ -35,7 +35,7 @@ export default class StripeService extends Service {
     return this._stripe.createPaymentMethod (options);
   }
 
-  confirmCardPayment (clientSecret, options) {
-    return this._stripe.confirmCardPayment (clientSecret, options);
+  confirmCardPayment (clientSecret, data, options) {
+    return this._stripe.confirmCardPayment (clientSecret, data, options);
   }
 }
