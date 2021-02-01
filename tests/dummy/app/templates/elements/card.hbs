@@ -3,10 +3,13 @@
 <div>
   <StripeCardElement @change={{this.change}}
                      @clear={{this.clear}}
-                     @token={{hash create=this.create callback=this.created}}/>
+                     @token={{hash create=this.create callback=this.created}}
+                     @paymentMethod={{hash create=this.createPaymentMethod callback=this.paymentMethodCreated}} />
   <div class="actions">
     <button {{on "click" this.doClear}}>Clear</button>
     <button {{on "click" this.doCreateToken}}>Create token</button>
+    <button {{on "click" this.doCreatePaymentMethod}}>Create payment method</button>
+
   </div>
 </div>
 
@@ -17,5 +20,13 @@
     <tr><td>Last 4 digits:</td><td>{{this.token.last4}}</td></tr>
     <tr><td>Brand:</td><td>{{this.token.brand}}</td></tr>
   </table>
+{{/if}}
 
+{{#if this.paymentMethod.isValid}}
+  <h3>Stripe Payment Method</h3>
+  <table>
+    <tr><td>Id:</td><td>{{this.paymentMethod.id}}</td></tr>
+    <tr><td>Last 4 digits:</td><td>{{this.paymentMethod.card.last4}}</td></tr>
+    <tr><td>Brand:</td><td>{{this.paymentMethod.card.brand}}</td></tr>
+  </table>
 {{/if}}

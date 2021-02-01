@@ -67,12 +67,34 @@ export default class StripeElementComponent extends Component {
     });
   }
 
+  @action
+  createPaymentMethod () {
+    this._createPaymentMethod (this.paymentMethodType).then (paymentMethod => {
+      // Transform the token into a model.
+      let data = this.serializePaymentMethod (this.store, paymentMethod);
+      let model = this.store.push (data);
+
+      // Notify the parent that we have created a token from the model.
+      getWithDefault (this, 'args.paymentMethod.callback', noOp) (model);
+    });
+  }
+
   serializeToken (store, token) {
     return token;
   }
 
+  serializePaymentMethod (store, paymentMethod) {
+    let modelClass = store.modelFor ('stripe-payment-method');
+    let serializer = store.serializerFor ('stripe-payment-method');
+    return serializer.normalizeSaveResponse (this.store, modelClass, paymentMethod);
+  }
+
   _createToken (data) {
     return this.stripe.createToken (this._element, data || this.data);
+  }
+
+  _createPaymentMethod (type, options = {}) {
+    return this.stripe.createPaymentMethod (Object.assign ({}, options, { type, card: this._element }));
   }
 
   get data () {

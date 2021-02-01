@@ -1,7 +1,7 @@
 import StripeTokenModel from "./stripe-token";
 
 import { attr } from '@ember-data/model';
-import { equal, and } from '@ember/object/computed';
+import { equal } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 
 export default class StripeCardTokenModel extends StripeTokenModel {
@@ -85,6 +85,7 @@ export default class StripeCardTokenModel extends StripeTokenModel {
     return `${this.brand} - ${this.funding} (ending in ${this.last4})`;
   }
 
-  @and ('{name,number,cvc,expMonth,expYear}')
-  isComplete;
+  get isComplete () {
+    return isPresent (this.name) && isPresent (this.number) && isPresent (this.cvc) && isPresent (this.expMonth) && isPresent (this.expYear);
+  }
 }

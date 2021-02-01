@@ -30,4 +30,8 @@ export default class StripeService extends Service {
   createToken (type, options) {
     return this._stripe.createToken (type, options);
   }
+
+  createPaymentMethod (options) {
+    return this._stripe.createPaymentMethod (options);
+  }
 }

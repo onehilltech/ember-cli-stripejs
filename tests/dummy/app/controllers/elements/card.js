@@ -10,7 +10,13 @@ export default class ElementsCardController extends Controller {
   create;
 
   @tracked
+  createPaymentMethod;
+
+  @tracked
   token;
+
+  @tracked
+  paymentMethod;
 
   @action
   change (card) {
@@ -29,7 +35,17 @@ export default class ElementsCardController extends Controller {
   }
 
   @action
+  doCreatePaymentMethod () {
+    this.createPaymentMethod = true;
+  }
+
+  @action
   created (token) {
     this.token = token;
+  }
+
+  @action
+  paymentMethodCreated (paymentMethod) {
+    this.paymentMethod = paymentMethod;
   }
 }

@@ -2,6 +2,8 @@ import StripeElementComponent from "../-lib/stripe-element"
 import { action } from '@ember/object';
 
 export default class StripeCardElementComponent extends StripeElementComponent {
+  paymentMethodType = 'card';
+
   @action
   didInsert (htmlElement) {
     let element = this.createElement ('card', this.options);
