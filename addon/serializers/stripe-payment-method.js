@@ -1,5 +1,5 @@
 import RESTSerializer from '@ember-data/serializer/rest';
-import { underscore, camelize } from '@ember/string';
+import { underscore } from '@ember/string';
 
 export default class StripePaymentMethodSerializer extends RESTSerializer {
   primaryKey = 'id';

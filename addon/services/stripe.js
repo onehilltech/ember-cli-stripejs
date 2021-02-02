@@ -3,8 +3,12 @@
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { get, getWithDefault } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class StripeService extends Service {
+  @service
+  store;
+
   init () {
     super.init (...arguments);
 
@@ -36,6 +40,14 @@ export default class StripeService extends Service {
   }
 
   confirmCardPayment (clientSecret, data, options) {
-    return this._stripe.confirmCardPayment (clientSecret, data, options);
+    return this._stripe.confirmCardPayment (clientSecret, data, options)
+      .then (payload => {
+        // Transform the payload into a stripe payment intent object.
+        let modelClass = this.store.modelFor ('stripe-payment-intent');
+        let serializer = this.store.serializerFor ('stripe-payment-intent');
+        let data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+
+        return this.store.push (data)
+      });
   }
 }
