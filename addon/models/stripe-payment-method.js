@@ -1,10 +1,11 @@
 import Model, { attr } from '@ember-data/model';
+import { fragment } from 'ember-data-model-fragments/attributes';
 
 export default class StripePaymentMethodModel extends Model {
   @attr('boolean')
   livemode;
 
-  @attr
+  @fragment ('stripe-card')
   card;
 
   @attr

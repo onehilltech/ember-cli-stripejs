@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/serializers/stripe-relationship';
+export { default } from '@onehilltech/ember-cli-stripejs/serializers/stripe-relationship';

@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/serializers/stripe-tos-acceptance';
+export { default } from '@onehilltech/ember-cli-stripejs/serializers/stripe-tos-acceptance';

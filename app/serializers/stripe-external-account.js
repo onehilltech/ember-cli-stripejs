@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/serializers/stripe-external-account';
+export { default } from '@onehilltech/ember-cli-stripejs/serializers/stripe-external-account';
