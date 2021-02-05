@@ -1,4 +1,3 @@
-import JSONAPISerializer from '@ember-data/serializer/json-api';
 import StripeTokenSerializer from "./stripe-token";
 
 export default class StripeBankAccountTokenSerializer extends StripeTokenSerializer {
