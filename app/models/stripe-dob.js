@@ -1,1 +1,1 @@
-export { default } from 'ember-cli-stripejs/models/stripe-dob';
+export { default } from '@onehilltech/ember-cli-stripejs/models/stripe-dob';
