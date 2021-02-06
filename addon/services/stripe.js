@@ -50,4 +50,16 @@ export default class StripeService extends Service {
         return this.store.push (data)
       });
   }
+
+  confirmCardSetup (clientSecret, data, options) {
+    return this._stripe.confirmCardSetup (clientSecret, data, options)
+      .then (payload => {
+        // Transform the payload into a stripe payment intent object.
+        let modelClass = this.store.modelFor ('stripe-setup-intent');
+        let serializer = this.store.serializerFor ('stripe-setup-intent');
+        let data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+
+        return this.store.push (data)
+      });
+  }
 }
