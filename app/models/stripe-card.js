@@ -1,1 +1,1 @@
-export { default } from '@onehilltech/mber-cli-stripejs/models/stripe-card';
+export { default } from '@onehilltech/ember-cli-stripejs/models/stripe-card';
