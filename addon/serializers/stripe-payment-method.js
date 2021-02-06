@@ -1,13 +1,6 @@
-import RESTSerializer from '@ember-data/serializer/rest';
-import { underscore } from '@ember/string';
+import ApplicationSerializer from './application';
 
-export default class StripePaymentMethodSerializer extends RESTSerializer {
-  primaryKey = 'id';
-
-  keyForAttribute (key) {
-    return underscore (key);
-  }
-
+export default class StripePaymentMethodSerializer extends ApplicationSerializer {
   modelNameFromPayloadKey (key) {
     return key === 'paymentMethod' ? 'stripe-payment-method' : key;
   }
