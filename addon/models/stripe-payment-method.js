@@ -5,9 +5,6 @@ export default class StripePaymentMethodModel extends Model {
   @attr('boolean')
   livemode;
 
-  @attr
-  type;
-
   @fragment ('stripe-card')
   card;
 
