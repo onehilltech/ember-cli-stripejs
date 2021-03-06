@@ -1,5 +1,5 @@
-import RESTAdapter from '@ember-data/adapter/rest';
+import ApplicationAdapter from './application';
 
-export default class StripePaymentMethodAdapter extends RESTAdapter {
+export default class StripePaymentMethodAdapter extends ApplicationAdapter {
 
 }

@@ -1,7 +1,7 @@
-import RESTAdapter from '@ember-data/adapter/rest';
+import ApplicationAdapter from './application';
 import { inject as service } from '@ember/service';
 
-export default class StripeTokenAdapter extends RESTAdapter {
+export default class StripeTokenAdapter extends ApplicationAdapter {
   @service
   stripe;
 }
