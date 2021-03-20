@@ -10,7 +10,7 @@ export default class StripeService extends Service {
   store;
 
   constructor () {
-    super ();
+    super (...arguments);
 
     const { version, publishableKey } = this.config;
     this.configure (publishableKey, { apiVersion: version });
