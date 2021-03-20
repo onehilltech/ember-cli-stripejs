@@ -16,7 +16,7 @@ export default class StripeService extends Service {
     this.configure (publishableKey, { apiVersion: version });
   }
 
-  configure (publishableKey, options) {
+  configure (publishableKey, options = this.defaultOptions) {
     this._stripe = new Stripe (publishableKey, options);
   }
 
@@ -30,6 +30,12 @@ export default class StripeService extends Service {
 
   get defaultApiVersion () {
     return get (this.config, 'version');
+  }
+
+  get defaultOptions () {
+    return {
+      apiVersion: this.defaultApiVersion
+    }
   }
 
   createElement (type, options) {
