@@ -9,22 +9,23 @@ export default class StripeService extends Service {
   @service
   store;
 
-  init () {
-    super.init (...arguments);
+  constructor () {
+    super ();
 
-    this._stripe = new Stripe (this.publishableKey, {
-      apiVersion: this.apiVersion
-    });
+    const { version, publishableKey } = this.config;
+    this.configure (publishableKey, { apiVersion: version });
   }
 
-  get publishableKey () {
-    const ENV = getOwner (this).resolveRegistration ('config:environment');
-    return get (ENV, 'stripe.publishableKey');
+  configure (publishableKey, options) {
+    this._stripe = new Stripe (publishableKey, options);
   }
 
-  get apiVersion () {
-    const ENV = getOwner (this).resolveRegistration ('config:environment');
-    return getWithDefault (ENV, 'stripe.version');
+  get config () {
+    return getOwner (this).resolveRegistration ('config:environment').stripe;
+  }
+
+  get defaultApiVersion () {
+    return get (this.config, 'version');
   }
 
   createElement (type, options) {
