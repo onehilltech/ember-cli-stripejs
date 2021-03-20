@@ -24,6 +24,10 @@ export default class StripeService extends Service {
     return getOwner (this).resolveRegistration ('config:environment').stripe;
   }
 
+  get defaultPublishableKey () {
+    return get (this.config, 'publishableKey');
+  }
+
   get defaultApiVersion () {
     return get (this.config, 'version');
   }
