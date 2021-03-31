@@ -2,7 +2,7 @@
 
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
-import { get, getWithDefault } from '@ember/object';
+import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class StripeService extends Service {
