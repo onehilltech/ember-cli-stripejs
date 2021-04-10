@@ -67,9 +67,13 @@ export default class StripeElementComponent extends Component {
     });
   }
 
+  get billingDetails () {
+    return this.args.billingDetails || {};
+  }
+
   @action
   createPaymentMethod () {
-    this._createPaymentMethod (this.paymentMethodType).then (paymentMethod => {
+    this._createPaymentMethod (this.paymentMethodType, this.billingDetails).then (paymentMethod => {
       // Transform the token into a model.
       let data = this.serializePaymentMethod (this.store, paymentMethod);
       let model = this.store.push (data);
@@ -93,8 +97,8 @@ export default class StripeElementComponent extends Component {
     return this.stripe.createToken (this._element, data || this.data);
   }
 
-  _createPaymentMethod (type, options = {}) {
-    return this.stripe.createPaymentMethod (Object.assign ({}, options, { type, card: this._element }));
+  _createPaymentMethod (type, billingDetails = {}) {
+    return this.stripe.createPaymentMethod (Object.assign ( { type, card: this._element, billing_details: billingDetails }));
   }
 
   get data () {
