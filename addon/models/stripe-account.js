@@ -1,5 +1,6 @@
 import Model, { attr } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
+import { equal } from '@ember/object/computed';
 
 export default class StripeAccountModel extends Model {
   @attr ('stripe-date')
@@ -7,6 +8,12 @@ export default class StripeAccountModel extends Model {
 
   @attr
   businessType;
+
+  @equal ('businessType', 'individual')
+  isIndividual;
+
+  @equal ('businessType', 'company')
+  isCompany;
 
   @fragment ('stripe-business-profile')
   businessProfile;
