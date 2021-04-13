@@ -1,5 +1,5 @@
-import ApplicationSerializer from './application';
+import StripePersonSerializer from './stripe-person';
 
-export default class StripePersonSerializer extends ApplicationSerializer {
+export default class StripePersonFragmentSerializer extends StripePersonSerializer {
 
 }

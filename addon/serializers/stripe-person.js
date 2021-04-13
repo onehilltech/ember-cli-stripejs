@@ -10,4 +10,8 @@ export default class StripePersonSerializer extends ApplicationSerializer {
   modelNameFromPayloadKey (/* key */) {
     return 'stripe-person';
   }
+
+  keyForAttribute (attr) {
+    return attr === 'ssnLast4' ? 'ssn_last_4' : super.keyForAttribute (...arguments);
+  }
 }
