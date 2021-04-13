@@ -17,7 +17,7 @@ export default class StripeAccountModel extends Model {
   @fragment ('stripe-company')
   company;
 
-  @fragment ('stripe-individual-fragment')
+  @fragment ('stripe-person-fragment')
   individual;
 
   @attr
