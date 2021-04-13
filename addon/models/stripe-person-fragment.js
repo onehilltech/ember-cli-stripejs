@@ -1,4 +1,5 @@
-import Fragment from 'ember-data-model-fragments/fragment';
+import MF from 'ember-data-model-fragments';
+
 import {makePerson} from "./stripe-person";
 
-export default makePerson (Fragment);
+export default makePerson (MF.Fragment);

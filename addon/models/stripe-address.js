@@ -1,10 +1,10 @@
-import Fragment from 'ember-data-model-fragments/fragment';
+import MF from 'ember-data-model-fragments';
 
 import { attr } from '@ember-data/model';
 import { isPresent } from '@ember/utils';
 import parser from 'parse-address';
 
-export default class StripeAddressFragment extends Fragment {
+export default class StripeAddressFragment extends MF.Fragment {
   @attr
   line1;
 
