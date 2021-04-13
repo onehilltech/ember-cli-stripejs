@@ -1,4 +1,5 @@
 import Transform from '@ember-data/serializer/transform';
+import { isPresent } from '@ember/utils';
 
 export default class StripeDateTransform extends Transform {
   deserialize(serialized) {
@@ -6,6 +7,6 @@ export default class StripeDateTransform extends Transform {
   }
 
   serialize(date) {
-    return date.getMilliseconds () / 1000;
+    return isPresent (date) ? date.getMilliseconds () / 1000 : date;
   }
 }
