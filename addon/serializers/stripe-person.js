@@ -12,6 +12,14 @@ export default class StripePersonSerializer extends ApplicationSerializer {
   }
 
   keyForAttribute (attr) {
-    return attr === 'ssnLast4' ? 'ssn_last_4' : super.keyForAttribute (...arguments);
+    if (attr === 'ssnLast4') {
+      return 'ssn_last_4';
+    }
+    else if (attr === 'ssnLast4Provided') {
+      return 'ssn_last_4_provided';
+    }
+    else {
+      super.keyForAttribute (...arguments);
+    }
   }
 }

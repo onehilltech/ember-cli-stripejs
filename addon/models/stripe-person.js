@@ -62,6 +62,9 @@ export function makePerson (Base) {
 
     @attr
     ssnLast4;
+
+    @attr ({ serialize: false })
+    ssnLast4Provided;
   }
 }
 
