@@ -15,6 +15,12 @@ export default class StripeAccountModel extends Model {
   @equal ('businessType', 'company')
   isCompany;
 
+  @equal ('businessType', 'non_profit')
+  isNonProfit;
+
+  @equal ('businessType', 'government_entity')
+  isGovernmentEntity
+
   @fragment ('stripe-business-profile')
   businessProfile;
 
@@ -59,6 +65,9 @@ export default class StripeAccountModel extends Model {
 
   @fragment ('stripe-external-accounts', {serialize: false})
   externalAccounts;
+
+  @attr
+  externalAccount;
 
   @fragment ('stripe-tos-acceptance', {serialize: false})
   tosAcceptance;
