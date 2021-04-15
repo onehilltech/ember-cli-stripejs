@@ -1,4 +1,4 @@
-import { fragment } from 'ember-data-model-fragments';
+import { fragment } from 'ember-data-model-fragments/attributes';
 import { isPresent } from '@ember/utils';
 import { attr } from "@ember-data/model";
 import Fragment from 'ember-data-model-fragments/fragment';
