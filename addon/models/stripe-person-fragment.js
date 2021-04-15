@@ -68,4 +68,7 @@ export default class StripePersonFragment extends Fragment {
 
   @attr
   idNumber;
+
+  @attr ('boolean')
+  idNumberProvided;
 }
