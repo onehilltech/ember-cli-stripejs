@@ -1,5 +1,5 @@
 import Model, { attr } from '@ember-data/model';
-import { fragment } from 'ember-data-model-fragments/attributes';
+import { fragment, fragmentArray } from 'ember-data-model-fragments/attributes';
 import { equal } from '@ember/object/computed';
 
 export default class StripeAccountModel extends Model {
@@ -63,8 +63,12 @@ export default class StripeAccountModel extends Model {
   @attr
   email;
 
-  @fragment ('stripe-external-accounts', {serialize: false})
+  @fragmentArray ('stripe-external-account', {serialize: false})
   externalAccounts;
+
+  get defaultExternalAccount () {
+    return this.externalAccount.findBy ('defaultForCurrency', true);
+  }
 
   @attr
   externalAccount;
