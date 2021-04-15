@@ -19,7 +19,7 @@ export default class StripePersonSerializer extends ApplicationSerializer {
       return 'ssn_last_4_provided';
     }
     else {
-      super.keyForAttribute (...arguments);
+      return super.keyForAttribute (...arguments);
     }
   }
 }
