@@ -1,8 +1,9 @@
-import MF, {fragment} from 'ember-data-model-fragments';
+import { fragment } from 'ember-data-model-fragments';
 import { isPresent } from '@ember/utils';
 import { attr } from "@ember-data/model";
+import Fragment from 'ember-data-model-fragments/fragment';
 
-export default class StripePersonFragment extends MF.Fragment {
+export default class StripePersonFragment extends Fragment {
   @attr ('stripe-date')
   created;
 
