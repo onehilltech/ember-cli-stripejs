@@ -55,7 +55,7 @@ export default class StripeBankAccountComponent extends Component {
       account_holder_type: this.accountHolderType.value
     }
 
-    this.stripe.createToken ('bank_account', data).then (token => this.created (token));
+    this.stripe.createToken ('bank_account', data).then (({token}) => this.created (token));
   }
 
   @action
