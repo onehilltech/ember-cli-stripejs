@@ -68,6 +68,9 @@ export function makePerson (Base) {
 
     @attr
     idNumber;
+
+    @attr ('boolean')
+    idNumberProvided
   }
 }
 
