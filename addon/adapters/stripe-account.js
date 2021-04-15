@@ -3,7 +3,7 @@ import { isPresent } from '@ember/utils';
 
 export default class StripeAccountAdapter extends ApplicationAdapter {
   urlForFindRecord (id, modelName, snapshot) {
-    let { adapterOptions } = snapshot;
+    let { adapterOptions = { } } = snapshot;
     let { baseModel, path = 'account' } = adapterOptions;
 
     if (isPresent (baseModel)) {
@@ -15,7 +15,7 @@ export default class StripeAccountAdapter extends ApplicationAdapter {
   }
 
   urlForUpdateRecord (id, modelName, snapshot) {
-    let { adapterOptions } = snapshot;
+    let { adapterOptions = {} } = snapshot;
     let { baseModel, path = 'account' } = adapterOptions;
 
     if (isPresent (baseModel)) {
@@ -27,7 +27,7 @@ export default class StripeAccountAdapter extends ApplicationAdapter {
   }
 
   urlForDeleteRecord (id, modelName, snapshot) {
-    let { adapterOptions } = snapshot;
+    let { adapterOptions = {} } = snapshot;
     let { baseModel, path = 'account' } = adapterOptions;
 
     if (isPresent (baseModel)) {
