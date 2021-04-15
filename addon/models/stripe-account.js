@@ -67,7 +67,7 @@ export default class StripeAccountModel extends Model {
   externalAccounts;
 
   get defaultExternalAccount () {
-    return this.externalAccount.findBy ('defaultForCurrency', true);
+    return this.externalAccounts.findBy ('defaultForCurrency', true);
   }
 
   @attr
