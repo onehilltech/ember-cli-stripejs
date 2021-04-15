@@ -65,4 +65,7 @@ export default class StripePersonFragment extends Fragment {
 
   @attr ({ serialize: false })
   ssnLast4Provided;
+
+  @attr
+  idNumber;
 }
