@@ -24,6 +24,7 @@ export default class StripeBankAccountComponent extends Component {
   @tracked
   accountHolderType;
 
+  @action
   setAccountHolderType (accountHolderType) {
     this.accountHolderType = accountHolderType;
   }
