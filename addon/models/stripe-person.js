@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
 import { isPresent } from '@ember/utils';
 
@@ -7,7 +7,7 @@ export function makePerson (Base) {
     @attr ('stripe-date')
     created;
 
-    @attr
+    @belongsTo('stripe-account')
     account;
 
     @attr
