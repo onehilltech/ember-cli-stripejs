@@ -21,12 +21,12 @@ export default class StripePersonAdapter extends ApplicationAdapter {
 
   urlForUpdateRecord (id, modelName, snapshot) {
     let account = snapshot.belongsTo ('account');
-    return `${this.urlFromAccount (account)}/${this.pathForType (modelName)}/${id}`;
+    return `${this.urlFromAccount (account, account.modelName)}/${this.pathForType (modelName)}/${id}`;
   }
 
   urlForDeleteRecord (id, modelName, snapshot) {
     let account = snapshot.belongsTo ('account');
-    return `${this.urlFromAccount (account)}/${this.pathForType (modelName)}/${id}`;
+    return `${this.urlFromAccount (account, account.modelName)}/${this.pathForType (modelName)}/${id}`;
   }
 
   urlFromSnapshot (snapshot) {
@@ -35,11 +35,11 @@ export default class StripePersonAdapter extends ApplicationAdapter {
 
     assert ('You must pass an stripe-account model as <account> in the adapter options', isPresent (account));
 
-    return this.urlFromAccount (account);
+    return this.urlFromAccount (account, account.constructor.modelName);
   }
 
-  urlFromAccount (account) {
-    let adapter = account.store.adapterFor (account.modelName);
-    return adapter.urlForFindRecord (account.id,  account.modelName, account);
+  urlFromAccount (account, modelName) {
+    let adapter = this.store.adapterFor (modelName);
+    return adapter.urlForFindRecord (account.id,  modelName, account);
   }
 }
