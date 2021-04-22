@@ -1,33 +1,31 @@
 import ApplicationAdapter from './application';
+import { assert } from '@ember/debug';
+import { isPresent } from '@ember/utils;
 
 export default class StripePersonAdapter extends ApplicationAdapter {
   urlForCreateRecord (modelName, snapshot) {
-    let { adapterOptions } = snapshot;
-    let { merchant } = adapterOptions;
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
+  }
 
-    let adapter = merchant.store.adapterFor (merchant.constructor.modelName);
-    let url = adapter.urlForFindRecord (merchant.id,  merchant.constructor.modelName, merchant);
-
-    return `${url}/representatives`;
+  urlForFindRecord (id, modelName, snapshot) {
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}/${id}`;
   }
 
   urlForUpdateRecord (id, modelName, snapshot) {
-    let { adapterOptions } = snapshot;
-    let { merchant } = adapterOptions;
-
-    let adapter = merchant.store.adapterFor (merchant.constructor.modelName);
-    let url = adapter.urlForFindRecord (merchant.id,  merchant.constructor.modelName, merchant);
-
-    return `${url}/representatives/${id}`;
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}/${id}`;
   }
 
   urlForDeleteRecord (id, modelName, snapshot) {
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}/${id}`;
+  }
+
+  urlForAccount (snapshot) {
     let { adapterOptions } = snapshot;
-    let { merchant } = adapterOptions;
+    let { account } = adapterOptions;
 
-    let adapter = merchant.store.adapterFor (merchant.constructor.modelName);
-    let url = adapter.urlForFindRecord (merchant.id,  merchant.constructor.modelName, merchant);
+    assert ('You must pass an stripe-account model as <account> in the adapter options', isPresent (account));
 
-    return `${url}/representatives/${id}`;
+    let adapter = account.store.adapterFor (account.constructor.modelName);
+    return adapter.urlForFindRecord (account.id,  account.constructor.modelName, account);
   }
 }
