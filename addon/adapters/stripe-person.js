@@ -19,6 +19,18 @@ export default class StripePersonAdapter extends ApplicationAdapter {
     return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}/${id}`;
   }
 
+  urlForQuery (query, modelName) {
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
+  }
+
+  urlForFindAll (modelName, snapshot) {
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
+  }
+
+  urlForQueryRecord (query, modelName) {
+    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
+  }
+
   urlForAccount (snapshot) {
     let { adapterOptions } = snapshot;
     let { account } = adapterOptions;
