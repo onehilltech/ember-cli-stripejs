@@ -15,16 +15,18 @@ export default class StripePersonAdapter extends ApplicationAdapter {
     return `${this.urlFromSnapshot (snapshot)}/${this.pathForType (modelName)}/${id}`;
   }
 
+  urlForFindAll (modelName, snapshot) {
+    return `${this.urlFromSnapshot (snapshot)}/${this.pathForType (modelName)}`;
+  }
+
   urlForUpdateRecord (id, modelName, snapshot) {
-    return `${this.urlFromAccount (snapshot.account)}/${this.pathForType (modelName)}/${id}`;
+    let account = snapshot.belongsTo ('account');
+    return `${this.urlFromAccount (account)}/${this.pathForType (modelName)}/${id}`;
   }
 
   urlForDeleteRecord (id, modelName, snapshot) {
-    return `${this.urlFromAccount (snapshot.account)}/${this.pathForType (modelName)}/${id}`;
-  }
-
-  urlForFindAll (modelName, snapshot) {
-    return `${this.urlFromSnapshot (snapshot)}/${this.pathForType (modelName)}`;
+    let account = snapshot.belongsTo ('account');
+    return `${this.urlFromAccount (account)}/${this.pathForType (modelName)}/${id}`;
   }
 
   urlFromSnapshot (snapshot) {
@@ -37,7 +39,7 @@ export default class StripePersonAdapter extends ApplicationAdapter {
   }
 
   urlFromAccount (account) {
-    let adapter = account.store.adapterFor (account.constructor.modelName);
-    return adapter.urlForFindRecord (account.id,  account.constructor.modelName, account);
+    let adapter = account.store.adapterFor (account.modelName);
+    return adapter.urlForFindRecord (account.id,  account.modelName, account);
   }
 }
