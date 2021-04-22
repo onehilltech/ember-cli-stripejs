@@ -1,6 +1,6 @@
 import ApplicationAdapter from './application';
 import { assert } from '@ember/debug';
-import { isPresent } from '@ember/utils;
+import { isPresent } from '@ember/utils';
 
 export default class StripePersonAdapter extends ApplicationAdapter {
   urlForCreateRecord (modelName, snapshot) {
@@ -24,10 +24,6 @@ export default class StripePersonAdapter extends ApplicationAdapter {
   }
 
   urlForFindAll (modelName, snapshot) {
-    return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
-  }
-
-  urlForQueryRecord (query, modelName) {
     return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
   }
 
