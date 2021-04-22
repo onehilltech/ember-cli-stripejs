@@ -32,7 +32,7 @@ export default class StripeBankAccountComponent extends Component {
   get accountHolderTypeOptions () {
     return [
       { value: 'individual', text: 'Individual'},
-      { value: 'company', text: 'company' }
+      { value: 'company', text: 'Company' }
     ]
   }
 
