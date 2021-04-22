@@ -3,6 +3,10 @@ import { assert } from '@ember/debug';
 import { isPresent } from '@ember/utils';
 
 export default class StripePersonAdapter extends ApplicationAdapter {
+  pathForType () {
+    return 'persons';
+  }
+
   urlForCreateRecord (modelName, snapshot) {
     return `${this.urlForAccount (snapshot)}/${this.pathForType (modelName)}`;
   }
