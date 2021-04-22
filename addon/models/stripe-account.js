@@ -78,4 +78,9 @@ export default class StripeAccountModel extends Model {
 
   @attr ({serialize: false})
   verification;
+
+  persons () {
+    const adapterOptions = { account: this };
+    return this.store.findAll ('stripe-person', { adapterOptions });
+  }
 }
