@@ -8,7 +8,8 @@ export default class StripePersonAdapter extends ApplicationAdapter {
   }
 
   urlForCreateRecord (modelName, snapshot) {
-    return `${this.urlFromSnapshot (snapshot)}/${this.pathForType (modelName)}`;
+    let account = snapshot.belongsTo ('account');
+    return `${this.urlFromAccount (account, account.modelName)}/${this.pathForType (modelName)}`;
   }
 
   urlForFindRecord (id, modelName, snapshot) {
