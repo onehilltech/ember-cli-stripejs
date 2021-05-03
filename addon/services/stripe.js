@@ -73,4 +73,15 @@ export default class StripeService extends Service {
         return this.store.push (data)
       });
   }
+
+  /**
+   * Create a payment requests objects for Apple Pay or the standard payment request
+   * API.
+   *
+   * @param options
+   * @returns {*}
+   */
+  paymentRequest (options) {
+    return this._stripe.paymentRequest (options);
+  }
 }
