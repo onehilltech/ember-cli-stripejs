@@ -1,4 +1,5 @@
 import ApplicationSerializer from './application';
+import { isPresent } from '@ember/utils';
 
 export default class StripePaymentMethodSerializer extends ApplicationSerializer {
   modelNameFromPayloadKey (key) {
@@ -6,8 +7,10 @@ export default class StripePaymentMethodSerializer extends ApplicationSerializer
   }
 
   normalizeSingleResponse(store, primaryModelClass, payload) {
-    // We are going to delete te type property from the payload.
-    delete payload.paymentMethod.type;
+    if (isPresent (payload.paymentMethod)) {
+      // We are going to delete te type property from the payload.
+      delete payload.paymentMethod.type;
+    }
 
     return super.normalizeSingleResponse (...arguments);
   }
