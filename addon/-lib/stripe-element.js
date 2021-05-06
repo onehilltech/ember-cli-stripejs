@@ -56,31 +56,35 @@ export default class StripeElementComponent extends Component {
   }
 
   @action
-  createToken () {
-    this._createToken ().then (token => {
-      // Transform the token into a model.
-      let data = this.serializeToken (this.store, token);
-      let model = this.store.push (data);
+  createToken (element, [create]) {
+    if (create) {
+      this._createToken ().then (token => {
+        // Transform the token into a model.
+        let data = this.serializeToken (this.store, token);
+        let model = this.store.push (data);
 
-      // Notify the parent that we have created a token from the model.
-      getWithDefault (this, 'args.token.callback', noOp) (model);
-    });
+        // Notify the parent that we have created a token from the model.
+        getWithDefault (this, 'args.token.callback', noOp) (model);
+      });
+    }
   }
 
   @action
-  createPaymentMethod () {
-    let options = {
-      billing_details: this.billingDetails
-    };
+  createPaymentMethod (element, [create]) {
+    if (create) {
+      let options = {
+        billing_details: this.billingDetails
+      };
 
-    this._createPaymentMethod (this.paymentMethodType, options).then (paymentMethod => {
-      // Transform the token into a model.
-      let data = this.serializePaymentMethod (this.store, paymentMethod);
-      let model = this.store.push (data);
+      this._createPaymentMethod (this.paymentMethodType, options).then (paymentMethod => {
+        // Transform the token into a model.
+        let data = this.serializePaymentMethod (this.store, paymentMethod);
+        let model = this.store.push (data);
 
-      // Notify the parent that we have created a token from the model.
-      getWithDefault (this, 'args.paymentMethod.callback', noOp) (model);
-    });
+        // Notify the parent that we have created a token from the model.
+        getWithDefault (this, 'args.paymentMethod.callback', noOp) (model);
+      });
+    }
   }
 
   get billingDetails () {
