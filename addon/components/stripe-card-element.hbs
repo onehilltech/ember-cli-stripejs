@@ -1,7 +1,9 @@
 <div class="stripe-card-element"
   {{did-update this.clear @clear}}
   {{did-update this.createToken @token.create}}
-  {{did-update this.createPaymentMethod @paymentMethod.create}}>
+  {{did-update this.createPaymentMethod @paymentMethod.create}}
+  {{did-update this.update "disabled" @disabled}}
+>
   {{#if @label}}
     <label class="stripe-card-element__label">{{@label}}
       <div class="stripe-card-element__element" {{did-insert this.didInsert}} />
