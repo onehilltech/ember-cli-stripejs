@@ -89,7 +89,9 @@ export default class StripeElementComponent extends Component {
 
   @action
   update (element, [name, value]) {
-    this._element.update ({[name]: value});
+    if (isPresent (this._element)) {
+      this._element.update ({[name]: value});
+    }
   }
 
   get billingDetails () {
