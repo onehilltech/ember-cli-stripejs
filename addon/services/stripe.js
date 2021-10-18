@@ -1,9 +1,14 @@
-/* global Stripe */
+/* global Stripe, cordova */
 
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { isPresent } from '@ember/utils';
+
+function hasCordovaPlugin () {
+  return isPresent (window.cordova) && isPresent (window.cordova.plugins) && isPresent (window.cordova.plugins.stripe);
+}
 
 export default class StripeService extends Service {
   @service
@@ -17,7 +22,16 @@ export default class StripeService extends Service {
   }
 
   configure (publishableKey, options = this.defaultOptions) {
+    // Configure the stripe.js api.
     this._stripe = new Stripe (publishableKey, options);
+
+    // There is a chance that we have installed the cordova plugin because we are running
+    // in the CORBER application. If that is the case, then we need to configure the publishable
+    // key for the Stripe under this plugin.
+
+    if (hasCordovaPlugin ()) {
+      cordova.plugins.stripe.setPublishableKey (publishableKey);
+    }
   }
 
   get config () {
@@ -43,7 +57,22 @@ export default class StripeService extends Service {
   }
 
   createToken (type, options) {
-    return this._stripe.createToken (type, options);
+    if (type === 'bank_account' && hasCordovaPlugin ()) {
+      return new Promise ((resolve, reject) => {
+        function success (token) {
+          resolve ({ token });
+        }
+
+        function failure (error) {
+          resolve ({ error });
+        }
+
+        cordova.plugins.stripe.createBankAccountToken (options, success, failure);
+      });
+    }
+    else {
+      return this._stripe.createToken (type, options);
+    }
   }
 
   createPaymentMethod (options) {
