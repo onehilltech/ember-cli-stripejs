@@ -1,22 +1,13 @@
 ember-cli-stripejs
 ==============================================================================
 
-[Short description of the addon.]
-
-
-Compatibility
-------------------------------------------------------------------------------
-
-* Ember.js v3.12 or above
-* Ember CLI v2.13 or above
-* Node.js v10 or above
-
+An add-on for integrating Stripe into your EmberJS application.
 
 Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-cli-stripejs
+ember install @onehilltech/ember-cli-stripejs
 ```
 
 
@@ -26,13 +17,13 @@ Usage
 [Longer description of how to use the addon in apps.]
 
 
-Contributing
+Using with Corber / Cordova
 ------------------------------------------------------------------------------
 
-See the [Contributing](CONTRIBUTING.md) guide for details.
+If you are using any of the Stripe element component in a Corber (or Cordova) 
+application, then you must allow navigation the Stripe. Otherwise, the Stripe
+element components will not load correctly.
 
-
-License
-------------------------------------------------------------------------------
-
-This project is licensed under the [MIT License](LICENSE.md).
+```xml
+<allow-navigation href="https://js.stripe.com/*" />
+```
