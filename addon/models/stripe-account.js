@@ -79,7 +79,7 @@ export default class StripeAccountModel extends Model {
   @attr ({serialize: false})
   verification;
 
-  @attr ({serialize: false})
+  @fragment ('stripe-account-requirements', {serialize: false})
   requirements;
 
   @attr ({serialize: false})
