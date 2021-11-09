@@ -7,6 +7,9 @@ export default class StripeAccountModel extends Model {
   created;
 
   @attr
+  type;
+
+  @attr
   businessType;
 
   @equal ('businessType', 'individual')
