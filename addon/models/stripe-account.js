@@ -99,5 +99,5 @@ export default class StripeAccountModel extends Model {
   }
 
   @fragment('stripe-account-settings')
-  settings
+  settings;
 }
