@@ -1,4 +1,4 @@
-import JSONAPISerializer from '@ember-data/serializer/json-api';
+import ApplicationSerializer from './application';
 
-export default class StripeAccountSettingsPayoutsScheduleSerializer extends JSONAPISerializer {
+export default class StripeAccountSettingsPayoutsScheduleSerializer extends ApplicationSerializer {
 }
