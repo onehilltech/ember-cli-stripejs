@@ -97,4 +97,7 @@ export default class StripeAccountModel extends Model {
     const adapterOptions = { account: this };
     return this.store.findRecord ('stripe-person', id, { adapterOptions });
   }
+
+  @fragment('stripe-account-settings')
+  settings
 }
