@@ -6,7 +6,7 @@ export default class StripeAccountSettingsPayoutsScheduleFragment extends MF.Fra
   @attr('number')
   delayDays;
 
-  @attr
+  @attr({serialize: 'always'})
   interval;
 
   @attr('number')
