@@ -1,6 +1,9 @@
 import Model, { attr } from '@ember-data/model';
+
 import { fragment, fragmentArray } from 'ember-data-model-fragments/attributes';
 import { equal } from '@ember/object/computed';
+import { memberAction } from 'ember-api-actions';
+import { serializeAndPush } from 'ember-blueprint-data';
 
 export default class StripeAccountModel extends Model {
   @attr ('stripe-date')
@@ -100,4 +103,16 @@ export default class StripeAccountModel extends Model {
 
   @fragment('stripe-account-settings')
   settings;
+
+  /**
+   * Get the balance of the account.
+   *
+   * @type {*}
+   */
+  getBalance = memberAction ({
+    path: 'balance',
+    type: 'get',
+    urlType: 'findRecord',
+    after: serializeAndPush ({model: 'stripe-balance'})
+  });
 }
