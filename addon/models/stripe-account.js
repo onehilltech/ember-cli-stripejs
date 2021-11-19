@@ -113,6 +113,11 @@ export default class StripeAccountModel extends Model {
     path: 'balance',
     type: 'get',
     urlType: 'findRecord',
-    after: serializeAndPush ({model: 'stripe-balance'})
+    after (response) {
+      const { 'stripe-balance': balance } = response;
+      balance.id = `balance_${this.id}`;
+
+      return serializeAndPush ({model: 'stripe-balance'}).bind (this) (response);
+    }
   });
 }
