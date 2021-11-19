@@ -9,6 +9,6 @@ export default class StripeBalanceFundFragment extends MF.Fragment {
   @attr
   currency;
 
-  @fragmentArray('stripe-balance-fund-source-type')
+  @fragment('stripe-balance-fund-source-type')
   sourceTypes;
 }
