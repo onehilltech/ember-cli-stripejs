@@ -70,7 +70,42 @@ export function makePerson (Base) {
     idNumber;
 
     @attr ('boolean')
-    idNumberProvided
+    idNumberProvided;
+
+    get isDue () {
+      return isPresent (this.eventuallyDue) || isPresent (this.currentlyDue) || isPresent (this.pastDue);
+    }
+
+    get eventuallyDue () {
+      return this._filterRequirements (this.get ('account.requirements.eventuallyDue'));
+    }
+
+    get currentlyDue () {
+      return this._filterRequirements (this.get ('account.requirements.currentlyDue'));
+    }
+
+    get pastDue () {
+      return this._filterRequirements (this.get ('account.requirements.pastDue'));
+    }
+
+    /**
+     * Filter the requirements for this person from the list of requirements.
+     *
+     * @param requirements
+     * @returns {*}
+     * @private
+     */
+    _filterRequirements (requirements) {
+      return requirements.reduce ((filtered, requirement) => {
+        let [id, ...field] = requirement.split ('.');
+
+        if (id === this.id) {
+          filtered.push (field.join ('.'));
+        }
+
+        return filtered;
+      }, []);
+    }
   }
 }
 
