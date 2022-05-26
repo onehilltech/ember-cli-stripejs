@@ -6,8 +6,8 @@ module.exports = {
   contentFor (type) {
     this._super (...arguments);
 
-    if (type === 'body-footer') {
-      return '<script type="text/javascript" src="https://js.stripe.com/v3/"></script>';
+    if (type === 'body') {
+      return '<script src="https://js.stripe.com/v3/"></script>';
     }
   }
 };
