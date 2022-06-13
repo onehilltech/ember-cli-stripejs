@@ -34,7 +34,7 @@ export default class StripeBankAccountTokenModel extends StripeTokenModel {
   status;
 
   @equal ('status', 'new')
-  isNew;
+  isNewAccount;
 
   @equal ('status', 'verified')
   isVerified;
