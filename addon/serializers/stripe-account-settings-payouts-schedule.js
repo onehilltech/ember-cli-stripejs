@@ -1,5 +1,5 @@
 import ApplicationSerializer from './application';
-import { isPresent } from '@ember/utils';
+import { isPresent, isNone } from '@ember/utils';
 
 export default class StripeAccountSettingsPayoutsScheduleSerializer extends ApplicationSerializer {
   /**
@@ -15,6 +15,11 @@ export default class StripeAccountSettingsPayoutsScheduleSerializer extends Appl
       case 'weeklyAnchor':
         if (isPresent (snapshot.attr (key))) {
           super.serializeAttribute (...arguments);
+
+          // We are always going to serialize the interval as well.
+          if (isNone (json['interval'])) {
+            json['interval'] = snapshot.attr ('interval');
+          }
         }
         break;
 
