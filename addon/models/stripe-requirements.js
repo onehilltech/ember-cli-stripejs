@@ -1,19 +1,24 @@
 import MF from 'ember-data-model-fragments';
-import { attr } from '@ember-data/model';
+import { array } from 'ember-data-model-fragments/attributes';
+import { isPresent } from '@ember/utils';
 
 export default class StripeRequirementsFragment extends MF.Fragment {
-  @attr
+  @array('string')
   currentlyDue;
 
-  @attr
+  @array('string')
   errors;
 
-  @attr
+  @array('string')
   eventuallyDue;
 
-  @attr
+  @array('string')
   pastDue;
 
-  @attr
+  @array('string')
   pendingVerification;
+
+  isDue () {
+    return isPresent (this.pastDue) || isPresent (this.currentlyDue);
+  }
 }
