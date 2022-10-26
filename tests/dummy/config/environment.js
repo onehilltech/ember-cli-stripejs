@@ -21,13 +21,9 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
-<<<<<<< HEAD
-
     stripe: {
-      publishableKey: 'pk_test_NpIaFu4dlLFWewoBSNPfXuz4'
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
     }
-=======
->>>>>>> 4004368 (v3.16.2...v3.28.6)
   };
 
   if (environment === 'development') {

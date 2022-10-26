@@ -122,6 +122,11 @@ export default class StripeService extends Service {
     return stripe.paymentRequest (options);
   }
 
+  /**
+   * Get a reference to the Stripe singleton instance.
+   * *
+   * @return {Promise<Stripe>}
+   */
   async getStripe () {
     if (isPresent (this._stripe)) {
       return this._stripe;

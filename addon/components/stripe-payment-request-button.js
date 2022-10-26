@@ -8,15 +8,16 @@ export default class StripePaymentRequestButtonComponent extends Component {
   stripe;
 
   @action
-  didInsert (element) {
-    let button = this.stripe.create ('paymentRequestButton', this.options);
+  async didInsert (element) {
+    const button = await this.stripe.create ('paymentRequestButton', this.options);
 
     this.paymentRequest.on ('paymentmethod', this.didPaymentMethod.bind (this));
-    this.paymentRequest.canMakePayment ().then (result => {
-      if (result) {
-        button.mount (element);
-      }
-    });
+
+    const result = await this.paymentRequest.canMakePayment ();
+
+    if (result) {
+      button.mount (element);
+    }
   }
 
   get options () {

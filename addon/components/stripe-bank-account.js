@@ -33,7 +33,7 @@ export default class StripeBankAccountComponent extends Component {
     return [
       { value: 'individual', text: 'Individual'},
       { value: 'company', text: 'Company' }
-    ]
+    ];
   }
 
   get submitButtonDisabled () {
@@ -45,7 +45,7 @@ export default class StripeBankAccountComponent extends Component {
   }
 
   @action
-  submit () {
+  async submit () {
     const data = {
       country: 'US',
       currency: 'usd',
@@ -53,10 +53,15 @@ export default class StripeBankAccountComponent extends Component {
       account_number: this.accountNumber,
       account_holder_name: this.accountHolderName,
       account_holder_type: this.accountHolderType.value
-    }
+    };
 
+    // Notify the client we are creating a token.
     this.creating ();
-    return this.stripe.createToken ('bank_account', data).then (({token}) => this.created (token));
+
+    const { token } = await this.stripe.createToken ('bank_account', data);
+
+    // Notify the client we have created the token.
+    this.created (token);
   }
 
   @action

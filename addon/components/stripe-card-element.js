@@ -5,8 +5,8 @@ export default class StripeCardElementComponent extends StripeElementComponent {
   paymentMethodType = 'card';
 
   @action
-  didInsert (htmlElement) {
-    let element = this.createElement ('card', this.options);
+  async didInsert (htmlElement) {
+    const element = await this.createElement ('card', this.options);
     element.mount (htmlElement);
   }
 
@@ -27,8 +27,9 @@ export default class StripeCardElementComponent extends StripeElementComponent {
   }
 
   serializeToken (store, token) {
-    let modelClass = store.modelFor ('stripe-card-token');
-    let serializer = store.serializerFor ('stripe-card-token');
+    const modelClass = store.modelFor ('stripe-card-token');
+    const serializer = store.serializerFor ('stripe-card-token');
+
     return serializer.normalizeSaveResponse (this.store, modelClass, token);
   }
 }

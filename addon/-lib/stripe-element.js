@@ -7,13 +7,13 @@ import { action, getWithDefault } from '@ember/object';
 function noOp () { }
 
 const BUILTIN_EVENT_HANDLERS = [
-  {event: 'change', method: 'didChange', handler: null},
-  {event: 'ready', method: 'didReady', handler: null },
-  {event: 'focus', method: 'didFocus', handler: null },
-  {event: 'blur', method: 'didBlur', handler: null},
-  {event: 'click', method: 'didClick', handler: null},
-  {event: 'escape', method: 'didEscape', handler: null},
-]
+  { event: 'change', method: 'didChange', handler: null },
+  { event: 'ready', method: 'didReady', handler: null },
+  { event: 'focus', method: 'didFocus', handler: null },
+  { event: 'blur', method: 'didBlur', handler: null },
+  { event: 'click', method: 'didClick', handler: null },
+  { event: 'escape', method: 'didEscape', handler: null },
+];
 
 export default class StripeElementComponent extends Component {
   @service
@@ -38,11 +38,13 @@ export default class StripeElementComponent extends Component {
     super.willDestroy ();
 
     // Destroy the element.
-    this._element.destroy ();
+    if (isPresent (this._element)) {
+      this._element.destroy ();
+    }
   }
 
-  createElement (type, options) {
-    this._element = this.stripe.createElement (type, options);
+  async createElement (type, options) {
+    this._element = await this.stripe.createElement (type, options);
     this._elementHandlers.forEach (elementHandler => this._element.on (elementHandler.event, elementHandler.handler));
 
     return this._element;
@@ -56,34 +58,31 @@ export default class StripeElementComponent extends Component {
   }
 
   @action
-  createToken (element, [create]) {
+  async createToken (element, [create]) {
     if (create) {
-      this._createToken ().then (token => {
-        // Transform the token into a model.
-        let data = this.serializeToken (this.store, token);
-        let model = this.store.push (data);
+      const token = await this._createToken ();
 
-        // Notify the parent that we have created a token from the model.
-        getWithDefault (this, 'args.token.callback', noOp) (model);
-      });
+      // Transform the token into a model.
+      const data = this.serializeToken (this.store, token);
+      const model = this.store.push (data);
+
+      // Notify the parent that we have created a token from the model.
+      getWithDefault (this, 'args.token.callback', noOp) (model);
     }
   }
 
   @action
-  createPaymentMethod (element, [create]) {
+  async createPaymentMethod (element, [create]) {
     if (create) {
-      let options = {
-        billing_details: this.billingDetails
-      };
+      const options = { billing_details: this.billingDetails };
+      const paymentMethod = await this._createPaymentMethod (this.paymentMethodType, options);
 
-      this._createPaymentMethod (this.paymentMethodType, options).then (paymentMethod => {
-        // Transform the token into a model.
-        let data = this.serializePaymentMethod (this.store, paymentMethod);
-        let model = this.store.push (data);
+      // Transform the token into a model.
+      const data = this.serializePaymentMethod (this.store, paymentMethod);
+      const model = this.store.push (data);
 
-        // Notify the parent that we have created a token from the model.
-        getWithDefault (this, 'args.paymentMethod.callback', noOp) (model);
-      });
+      // Notify the parent that we have created a token from the model.
+      getWithDefault (this, 'args.paymentMethod.callback', noOp) (model);
     }
   }
 
@@ -103,16 +102,16 @@ export default class StripeElementComponent extends Component {
   }
 
   serializePaymentMethod (store, paymentMethod) {
-    let modelClass = store.modelFor ('stripe-payment-method');
-    let serializer = store.serializerFor ('stripe-payment-method');
+    const modelClass = store.modelFor ('stripe-payment-method');
+    const serializer = store.serializerFor ('stripe-payment-method');
     return serializer.normalizeSaveResponse (this.store, modelClass, paymentMethod);
   }
 
-  _createToken (data) {
+  async _createToken (data) {
     return this.stripe.createToken (this._element, data || this.data);
   }
 
-  _createPaymentMethod (type, options = {}) {
+  async _createPaymentMethod (type, options = {}) {
     return this.stripe.createPaymentMethod (Object.assign ({}, options, { type, card: this._element }));
   }
 
