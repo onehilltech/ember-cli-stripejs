@@ -1,10 +1,9 @@
-/* global Stripe, cordova */
-
 import Service from '@ember/service';
 import { getOwner } from '@ember/application';
 import { get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { isPresent } from '@ember/utils';
+import { loadStripe } from '@stripe/stripe-js';
 
 function hasCordovaPlugin () {
   return isPresent (window.cordova) && isPresent (window.cordova.plugins) && isPresent (window.cordova.plugins.stripe);
@@ -13,26 +12,6 @@ function hasCordovaPlugin () {
 export default class StripeService extends Service {
   @service
   store;
-
-  constructor () {
-    super (...arguments);
-
-    const { version, publishableKey } = this.config;
-    this.configure (publishableKey, { apiVersion: version });
-  }
-
-  configure (publishableKey, options = this.defaultOptions) {
-    // Configure the stripe.js api.
-    this._stripe = new Stripe (publishableKey, options);
-
-    // There is a chance that we have installed the cordova plugin because we are running
-    // in the CORBER application. If that is the case, then we need to configure the publishable
-    // key for the Stripe under this plugin.
-
-    if (hasCordovaPlugin ()) {
-      cordova.plugins.stripe.setPublishableKey (publishableKey);
-    }
-  }
 
   get config () {
     return getOwner (this).resolveRegistration ('config:environment').stripe;
@@ -52,55 +31,84 @@ export default class StripeService extends Service {
     }
   }
 
-  createElement (type, options) {
-    return this._stripe.elements ().create (type, options);
+  /**
+   * Create a Stripe element
+   *
+   * @param type          Type of element to create
+   * @param options       Element options
+   */
+  async createElement (type, options) {
+    const stripe = await this.getStripe ();
+    return stripe.elements ().create (type, options);
   }
 
-  createToken (type, options) {
+  /**
+   * Create a token for sending payment information to the server.
+   *
+   * @param       type          Type of payment token to make
+   * @param       options       The token options
+   */
+  async createToken (type, options) {
     if (type === 'bank_account' && hasCordovaPlugin ()) {
-      return new Promise ((resolve, reject) => {
-        function success (token) {
-          resolve ({ token });
-        }
+      return new Promise ((resolve) => {
+        const success = token => resolve ({ token });
+        const failure = error => ({ error });
 
-        function failure (error) {
-          resolve ({ error });
-        }
-
-        cordova.plugins.stripe.createBankAccountToken (options, success, failure);
+        window.cordova.plugins.stripe.createBankAccountToken (options, success, failure);
       });
     }
     else {
-      return this._stripe.createToken (type, options);
+      const stripe = await this.getStripe ();
+      return stripe.createToken (type, options);
     }
   }
 
-  createPaymentMethod (options) {
-    return this._stripe.createPaymentMethod (options);
+  /**
+   * Create a payment method.
+   *
+   * @param options
+   */
+  async createPaymentMethod (options) {
+    const stripe = await this.getStripe ();
+    return stripe.createPaymentMethod (options);
   }
 
-  confirmCardPayment (clientSecret, data, options) {
-    return this._stripe.confirmCardPayment (clientSecret, data, options)
-      .then (payload => {
-        // Transform the payload into a stripe payment intent object.
-        let modelClass = this.store.modelFor ('stripe-payment-intent');
-        let serializer = this.store.serializerFor ('stripe-payment-intent');
-        let data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+  /**
+   * Confirm an existing card payment.
+   *
+   * @param clientSecret
+   * @param payment
+   * @param options
+   */
+  async confirmCardPayment (clientSecret, payment, options) {
+    const stripe = await this.getStripe ();
+    const payload = await stripe.confirmCardPayment (clientSecret, payment, options);
 
-        return this.store.push (data)
-      });
+    // Transform the payload into a stripe payment intent object.
+    const modelClass = this.store.modelFor ('stripe-payment-intent');
+    const serializer = this.store.serializerFor ('stripe-payment-intent');
+    const data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+
+    return this.store.push (data);
   }
 
-  confirmCardSetup (clientSecret, data, options) {
-    return this._stripe.confirmCardSetup (clientSecret, data, options)
-      .then (payload => {
-        // Transform the payload into a stripe payment intent object.
-        let modelClass = this.store.modelFor ('stripe-setup-intent');
-        let serializer = this.store.serializerFor ('stripe-setup-intent');
-        let data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+  /**
+   * Confirm the setup of a card.
+   * *
+   * @param clientSecret
+   * @param payment
+   * @param options
+   */
+  async confirmCardSetup (clientSecret, payment, options) {
+    const stripe = await this.getStripe ();
+    const payload = await stripe.confirmCardSetup (clientSecret, payment, options);
 
-        return this.store.push (data)
-      });
+    // Transform the payload into a stripe payment intent object.
+    const modelClass = this.store.modelFor ('stripe-setup-intent');
+    const serializer = this.store.serializerFor ('stripe-setup-intent');
+    const data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+
+    return this.store.push (data)
   }
 
   /**
@@ -108,9 +116,24 @@ export default class StripeService extends Service {
    * API.
    *
    * @param options
-   * @returns {*}
    */
-  paymentRequest (options) {
-    return this._stripe.paymentRequest (options);
+  async paymentRequest (options) {
+    const stripe = await this.getStripe ();
+    return stripe.paymentRequest (options);
+  }
+
+  async getStripe () {
+    if (isPresent (this._stripe)) {
+      return this._stripe;
+    }
+
+    const { publishableKey } = this.config;
+    this._stripe = await loadStripe (publishableKey);
+
+    if (hasCordovaPlugin ()) {
+      window.cordova.plugins.stripe.setPublishableKey (publishableKey);
+    }
+
+    return this._stripe;
   }
 }
