@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -13,18 +13,21 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+<<<<<<< HEAD
 
     stripe: {
       publishableKey: 'pk_test_NpIaFu4dlLFWewoBSNPfXuz4'
     }
+=======
+>>>>>>> 4004368 (v3.16.2...v3.28.6)
   };
 
   if (environment === 'development') {
