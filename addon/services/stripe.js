@@ -9,6 +9,14 @@ function hasCordovaPlugin () {
   return isPresent (window.cordova) && isPresent (window.cordova.plugins) && isPresent (window.cordova.plugins.stripe);
 }
 
+class StripeError extends Error {
+  constructor (reason, options) {
+    super (reason.message, options);
+
+    this.reason = reason;
+  }
+}
+
 export default class StripeService extends Service {
   @service
   store;
@@ -84,6 +92,10 @@ export default class StripeService extends Service {
     const stripe = await this.getStripe ();
     const payload = await stripe.confirmCardPayment (clientSecret, payment, options);
 
+    if (payload.error) {
+      throw new StripeError (payload.error);
+    }
+
     // Transform the payload into a stripe payment intent object.
     const modelClass = this.store.modelFor ('stripe-payment-intent');
     const serializer = this.store.serializerFor ('stripe-payment-intent');
@@ -131,6 +143,8 @@ export default class StripeService extends Service {
     if (isPresent (this._stripe)) {
       return this._stripe;
     }
+
+    console.trace ('creating an new instance of Stripe()');
 
     const { publishableKey } = this.config;
     this._stripe = loadStripe (publishableKey);
