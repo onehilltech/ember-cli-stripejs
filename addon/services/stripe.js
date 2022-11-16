@@ -127,13 +127,13 @@ export default class StripeService extends Service {
    * *
    * @return {Promise<Stripe>}
    */
-  async getStripe () {
+  getStripe () {
     if (isPresent (this._stripe)) {
       return this._stripe;
     }
 
     const { publishableKey } = this.config;
-    this._stripe = await loadStripe (publishableKey);
+    this._stripe = loadStripe (publishableKey);
 
     if (hasCordovaPlugin ()) {
       window.cordova.plugins.stripe.setPublishableKey (publishableKey);
