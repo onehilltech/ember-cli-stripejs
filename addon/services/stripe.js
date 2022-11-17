@@ -9,14 +9,6 @@ function hasCordovaPlugin () {
   return isPresent (window.cordova) && isPresent (window.cordova.plugins) && isPresent (window.cordova.plugins.stripe);
 }
 
-class StripeError extends Error {
-  constructor (reason, options) {
-    super (reason.message, options);
-
-    this.reason = reason;
-  }
-}
-
 export default class StripeService extends Service {
   @service
   store;
@@ -81,6 +73,11 @@ export default class StripeService extends Service {
     return stripe.createPaymentMethod (options);
   }
 
+  async createPaymentRequest (options) {
+    const stripe = await this.getStripe ();
+    return stripe.paymentRequest (options);
+  }
+
   /**
    * Confirm an existing card payment.
    *
@@ -91,10 +88,6 @@ export default class StripeService extends Service {
   async confirmCardPayment (clientSecret, payment, options) {
     const stripe = await this.getStripe ();
     const payload = await stripe.confirmCardPayment (clientSecret, payment, options);
-
-    if (payload.error) {
-      throw new StripeError (payload.error);
-    }
 
     // Transform the payload into a stripe payment intent object.
     const modelClass = this.store.modelFor ('stripe-payment-intent');
@@ -120,7 +113,7 @@ export default class StripeService extends Service {
     const serializer = this.store.serializerFor ('stripe-setup-intent');
     const data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
 
-    return this.store.push (data)
+    return this.store.push (data);
   }
 
   /**
@@ -139,15 +132,13 @@ export default class StripeService extends Service {
    * *
    * @return {Promise<Stripe>}
    */
-  getStripe () {
+  async getStripe () {
     if (isPresent (this._stripe)) {
       return this._stripe;
     }
 
-    console.trace ('creating an new instance of Stripe()');
-
     const { publishableKey } = this.config;
-    this._stripe = loadStripe (publishableKey);
+    this._stripe = await loadStripe (publishableKey);
 
     if (hasCordovaPlugin ()) {
       window.cordova.plugins.stripe.setPublishableKey (publishableKey);

@@ -3,86 +3,99 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from "@glimmer/tracking";
+import { isNone, isPresent } from '@ember/utils';
 
 export default class StripePaymentRequestButtonComponent extends Component {
+  @service
+  store;
+
   @service
   stripe;
 
   @tracked
+  button;
+
+  @tracked
   paymentRequest;
 
-  @tracked
-  paymentRequestButton;
-
-  @tracked
-  mountable;
+  element;
 
   @action
   async didInsert (element) {
-    this.paymentRequest = await this.stripe.paymentRequest (this.options);
-    this.paymentRequest.on ('paymentmethod', this.handlePaymentMethod.bind (this));
+    this.element = element;
 
-    this.paymentRequestButton = await this.stripe.createElement ('paymentRequestButton', { paymentRequest: this.paymentRequest });
-    this.mountable = await this.paymentRequest.canMakePayment ();
+    // First, let's create a payment request object. The payment request will be passed
+    // to the mounted payment request button.
+    const { label, amount } = this.args;
 
-    if (this.mountable) {
-      this.paymentRequestButton.mount (element);
+    if (amount > 0) {
+      await this.createPaymentRequest ();
     }
   }
 
-  get options () {
-    return Object.assign ({}, this.args.options, {
+  willDestroy () {
+    super.willDestroy ();
+
+    if (isPresent (this.button)) {
+      this.button.unmount ();
+
+      this.paymentRequest = null;
+      this.button = null;
+    }
+  }
+
+  async createPaymentRequest () {
+    const { label, amount } = this.args;
+
+    this.paymentRequest = await this.stripe.createPaymentRequest ({
       country: 'US',
       currency: 'usd',
-      total: {
-        label: this.args.label,
-        amount: this.args.amount
-      }
+      total: { label, amount },
+      requestPayerName: this.args.requestPayerName,
+      requestPayerEmail: this.args.requestPayerEmail,
     });
+
+    this.paymentRequest.on ('paymentmethod', this.paymentMethod.bind (this));
+    this.paymentRequest.on ('cancel', () => (this.args.cancel || function () {}) ());
+
+    this.button = await this.stripe.createElement ('paymentRequestButton', { paymentRequest: this.paymentRequest });
+    const result = await this.paymentRequest.canMakePayment ();
+
+    if (result) {
+      this.button.mount (this.element);
+    }
   }
 
-  get clientSecret () {
-    return this.args.clientSecret;
-  }
-
-  async handlePaymentMethod (ev) {
-    const { paymentMethod } = ev;
-
-    // Confirm the PaymentIntent without handling potential next actions (yet).
-    const { paymentIntent, error: confirmError } =
-      await this.stripe.confirmCardPayment (
-        this.clientSecret,
-        {payment_method: paymentMethod.id},
-        this.confirmOptions);
-
-    if (confirmError) {
-      // Report to the browser that the payment failed, prompting it to
-      // re-show the payment interface, or show an error message and close
-      // the payment interface.
-      ev.complete('fail');
+  @action
+  async updatePaymentRequest (element, [amount, label]) {
+    if (amount > 0) {
+      if (isNone (this.paymentRequest)) {
+        await this.createPaymentRequest ();
+      }
+      else {
+        this.paymentRequest.update ({
+          total: { amount, label }
+        });
+      }
     }
     else {
-      // Report to the browser that the confirmation was successful, prompting
-      // it to close the browser payment method collection interface.
-      ev.complete('success');
-      // Check if the PaymentIntent requires any actions and if so let Stripe.js
-      // handle the flow. If using an API version older than "2019-02-11"
-      // instead check for: `paymentIntent.status === "requires_source_action"`.
-      if (paymentIntent.status === "requires_action") {
-        // Let Stripe.js handle the rest of the payment flow.
-        const {error} = await stripe.confirmCardPayment(clientSecret);
-        if (error) {
-          // The payment failed -- ask your customer for a new payment method.
-        } else {
-          // The payment has succeeded.
-        }
-      } else {
-        // The payment has succeeded.
-      }
+      // Unmount the button since there is no amount.
+      this.button.unmount ();
+
+      this.paymentRequest = null;
+      this.button = null;
     }
   }
 
-  get confirmOptions () {
-    return { handleActions: false };
+  async paymentMethod (ev) {
+    const { paymentMethod: payload } = ev;
+
+    // Transform the payload into a stripe payment intent object.
+    const modelClass = this.store.modelFor ('stripe-payment-method');
+    const serializer = this.store.serializerFor ('stripe-payment-method');
+    const data = serializer.normalizeSaveResponse (this.store, modelClass, { 'stripe-payment-method': payload });
+    const paymentMethod = this.store.push (data);
+
+    this.args.paymentMethod (paymentMethod, ev);
   }
 }

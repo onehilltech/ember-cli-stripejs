@@ -1,1 +1,5 @@
-<div class="stripe-payment-request-button" {{did-insert this.didInsert}}></div>
+<div class="stripe-payment-request-button"
+  {{did-insert this.didInsert}}
+  {{did-update this.updatePaymentRequest @amount @label}}
+     ...attributes>
+</div>
