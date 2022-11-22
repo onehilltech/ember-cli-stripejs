@@ -58,11 +58,24 @@ export default class StripePaymentRequestButtonComponent extends Component {
     this.paymentRequest.on ('paymentmethod', this.paymentMethod.bind (this));
     this.paymentRequest.on ('cancel', () => (this.args.cancel || function () {}) ());
 
-    this.button = await this.stripe.createElement ('paymentRequestButton', { paymentRequest: this.paymentRequest });
+    this.button = await this.stripe.createElement ('paymentRequestButton', {
+      paymentRequest: this.paymentRequest,
+      style: {
+        paymentRequestButton: this.style
+      }
+    });
     const result = await this.paymentRequest.canMakePayment ();
 
     if (result) {
       this.button.mount (this.element);
+    }
+  }
+
+  get style () {
+    return {
+      type: this.args.type || 'default',
+      theme: this.args.theme || 'dark',
+      height: this.args.height || '40px'
     }
   }
 
