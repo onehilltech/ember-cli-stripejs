@@ -1,6 +1,6 @@
 {
   "name": "@onehilltech/ember-cli-stripejs",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "The ember-cli addon for Stripe",
   "keywords": [
     "ember-addon",
