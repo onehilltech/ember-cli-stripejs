@@ -105,6 +105,24 @@ export default class StripeService extends Service {
   }
 
   /**
+   * Save the payment method in the event as a model.
+   * *
+   * @param ev
+   * @return {Promise<void>}
+   */
+  async savePaymentMethod (ev) {
+    const { paymentMethod } = ev;
+    const payload = { 'stripe-payment-method': paymentMethod };
+
+    // Transform the payload into a stripe payment method object.
+    const modelClass = this.store.modelFor('stripe-payment-method');
+    const serializer = this.store.serializerFor('stripe-payment-method');
+    const data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+
+    return this.store.push (data);
+  }
+
+  /**
    * Confirm an existing card payment.
    *
    * @param clientSecret
