@@ -110,7 +110,7 @@ export default class StripeService extends Service {
    * @param ev
    * @return {Promise<void>}
    */
-  async savePaymentMethod (ev) {
+  savePaymentMethod (ev) {
     const { paymentMethod } = ev;
     const payload = { 'stripe-payment-method': paymentMethod };
 
