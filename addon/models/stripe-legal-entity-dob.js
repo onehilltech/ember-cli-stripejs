@@ -1,14 +1,20 @@
-import DS from 'ember-data';
 import Fragment from 'ember-data-model-fragments/fragment';
+import { attr } from '@ember-data/model';
 import { date as dateInput } from 'ember-cli-input-helpers/computed';
 
-export default Fragment.extend({
-  day: DS.attr ('number', {allowNull: false}),
+export default class StripeLegalEntityDobFragment extends Fragment {
+  @attr ('number', {allowNull: false})
+  day;
 
-  month: DS.attr ('number', {allowNull: false}),
+  @attr ('number', {allowNull: false})
+  month;
 
-  year: DS.attr ('number', {allowNull: false}),
+  @attr ('number', {allowNull: false})
+  year;
 
-  date: DS.attr ('date'),
-  dateInput: dateInput ('date')
-});
+  @attr ('date')
+  date;
+
+  @dateInput ('date')
+  dateInput;
+}

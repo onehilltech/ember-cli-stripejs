@@ -1,7 +1,6 @@
 import StripeTokenModel from "./stripe-token";
 
 import { attr } from '@ember-data/model';
-import { equal } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 
 export default class StripeCardTokenModel extends StripeTokenModel {
@@ -17,17 +16,21 @@ export default class StripeCardTokenModel extends StripeTokenModel {
   @attr ('string')
   cvcCheck;
 
-  @equal ('cvcCheck', 'fail')
-  cvcFail;
+  get cvcFail () {
+    return this.cvcCheck === 'fail';
+  }
 
-  @equal ('cvcCheck', 'pass')
-  cvcPass;
+  get cvcPass () {
+    return this.cvcCheck === 'pass';
+  }
 
-  @equal ('cvcCheck', 'unchecked')
-  cvcUnchecked;
+  get cvcUnchecked () {
+    return this.cvcCheck === 'unchecked';
+  }
 
-  @equal ('cvcCheck', 'unavailable')
-  cvcUnavailable;
+  get cvcUnavailable () {
+    return this.cvcCheck === 'unavailable';
+  }
 
   @attr ('number')
   expMonth;

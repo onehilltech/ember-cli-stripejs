@@ -1,7 +1,6 @@
 import Model, { attr } from '@ember-data/model';
 
 import { fragment, fragmentArray } from 'ember-data-model-fragments/attributes';
-import { equal } from '@ember/object/computed';
 import { memberAction } from 'ember-api-actions';
 import { serializeAndPush } from 'ember-blueprint-data';
 
@@ -15,17 +14,21 @@ export default class StripeAccountModel extends Model {
   @attr
   businessType;
 
-  @equal ('businessType', 'individual')
-  isIndividual;
+  get isIndividual () {
+    return this.businessType === 'individual';
+  }
 
-  @equal ('businessType', 'company')
-  isCompany;
+  get isCompany () {
+    return this.businessType === 'company';
+  }
 
-  @equal ('businessType', 'non_profit')
-  isNonProfit;
+  get isNonProfit () {
+    return this.businessType === 'non_profit';
+  }
 
-  @equal ('businessType', 'government_entity')
-  isGovernmentEntity
+  get isGovernmentEntity () {
+    return this.businessType === 'government_entity';
+  }
 
   @fragment ('stripe-business-profile')
   businessProfile;

@@ -1,6 +1,5 @@
 import StripeTokenModel from "./stripe-token";
 import { attr } from '@ember-data/model';
-import { equal } from '@ember/object/computed';
 
 export default class StripeBankAccountTokenModel extends StripeTokenModel {
   @attr ('string')
@@ -33,18 +32,23 @@ export default class StripeBankAccountTokenModel extends StripeTokenModel {
   @attr ('string')
   status;
 
-  @equal ('status', 'new')
-  isNewAccount;
+  get isNewAccount () {
+    return this.status === 'new';
+  }
 
-  @equal ('status', 'verified')
-  isVerified;
+  get isVerified () {
+    return this.status === 'verified';
+  }
 
-  @equal ('status', 'validated')
-  isValidated;
+  get isValidated () {
+    return this.status === 'validated';
+  }
 
-  @equal ('status', 'errored')
-  errored;
+  get errored () {
+    return this.status === 'errored';
+  }
 
-  @equal ('status', 'verification_failed')
-  verificationFailed;
+  get verificationFailed () {
+    return this.status === 'verification_failed';
+  }
 }

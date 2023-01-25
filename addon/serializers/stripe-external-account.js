@@ -2,8 +2,6 @@ import ApplicationSerializer from './application';
 import { isPresent } from '@ember/utils';
 
 export default class StripeExternalAccountSerializer extends ApplicationSerializer {
-  primaryKey = 'id';
-
   keyForAttribute (key) {
     return key === 'source' ? 'id' : super.keyForAttribute (...arguments);
   }

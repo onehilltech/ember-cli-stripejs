@@ -1,49 +1,76 @@
-import DS from 'ember-data';
 import Fragment from 'ember-data-model-fragments/fragment';
+import { attr } from '@ember-data/model';
 
-import { equal } from '@ember/object/computed';
 import { memberAction } from 'ember-api-actions';
 import { fragmentOwner } from 'ember-data-model-fragments/attributes';
 
-export default Fragment.extend ({
-  source: DS.attr ('string'),
+export default class StripeExternalAccountFragment extends Fragment {
+  @attr
+  source;
 
-  account: DS.attr ('string'),
+  @attr
+  account;
 
-  accountHolderName: DS.attr ('string'),
+  @attr
+  accountHolderName;
 
-  accountHolderType: DS.attr ('string'),
+  @attr
+  accountHolderType;
 
-  bankName: DS.attr ('string'),
+  @attr
+  bankName;
 
-  country: DS.attr ('string'),
+  @attr
+  country;
 
-  currency: DS.attr ('string'),
+  @attr
+  currency;
 
-  defaultForCurrency: DS.attr ('boolean'),
+  @attr('boolean')
+  defaultForCurrency;
 
-  fingerprint: DS.attr ('string'),
+  @attr
+  fingerprint;
 
-  last4: DS.attr ('string'),
+  @attr
+  last4;
 
-  routingNumber: DS.attr ('string'),
+  @attr
+  routingNumber;
 
-  status: DS.attr ('string'),
-  isNew: equal ('status', 'new'),
-  isValidated: equal ('status', 'validated'),
-  isVerified: equal ('status', 'verified'),
-  isVerificationFailed: equal ('status', 'verification_failed'),
-  isErrored: equal ('status', 'errored'),
+  @attr
+  status;
+
+  get isNew () {
+    return this.status === 'new';
+  }
+
+  get isValidated () {
+    return this.status === 'validated';
+  }
+
+  get isVerified () {
+    return this.status === 'verified';
+  }
+
+  get isVerificationFailed () {
+    return this.status === 'verification_failed';
+  }
+
+  get isErrored () {
+    return this.status === 'errored';
+  }
 
   /**
    * Get the merchant that owns this external account.
    */
-  accounts: fragmentOwner (),
+  @fragmentOwner
+  accounts;
 
   /**
    * Make this account the default for its currency.
    */
-  update: memberAction ({
+  update = memberAction ({
     type: 'put',
     urlType: 'updateRecord',
 
@@ -61,13 +88,13 @@ export default Fragment.extend ({
         this.setProperties (data.attributes);
       }
     }
-  }),
+  });
 
   /**
    * Remove an external account from the merchant account.
    */
-  remove: memberAction ({
+  remove = memberAction ({
     type: 'delete',
     urlType: 'deleteRecord'
-  })
-});
+  });
+}

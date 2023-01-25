@@ -1,22 +1,39 @@
-import DS from 'ember-data';
 import Fragment from 'ember-data-model-fragments/fragment';
-import { not } from '@ember/object/computed'
+
+import { attr } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
 
-export default Fragment.extend({
-  address: fragment ('stripe-address'),
-  phone: DS.attr (),
+export default class StripeCompanyFragment extends Fragment {
+  @fragment ('stripe-address')
+  address;
 
-  directorsProvided: DS.attr ('boolean', {serialize: false}),
-  executivesProvided: DS.attr ('boolean', {serialize: false}),
-  ownersProvided: DS.attr ('boolean', {serialize: false}),
+  @attr
+  phone;
 
-  name: DS.attr (),
-  structure: DS.attr (),
+  @attr ('boolean', {serialize: false})
+  directorsProvided;
+
+  @attr ('boolean', {serialize: false})
+  executivesProvided;
+
+  @attr ('boolean', {serialize: false})
+  ownersProvided;
+
+  @attr
+  name;
+
+  @attr
+  structure;
 
   /// The tax id for the company. This property is for setting the tax id. If a tax
   /// id has been provided, this attribute will be null and taxIdProvided will be true.
-  taxId: DS.attr ('string'),
-  taxIdProvided: DS.attr ('boolean', {serialize: false}),
-  taxIdNotProvided: not ('taxIdProvided')
-});
+  @attr
+  taxId;
+
+  @attr ('boolean', {serialize: false})
+  taxIdProvided;
+
+  get taxIdNotProvided () {
+    return !this.taxIdProvided;
+  }
+}
