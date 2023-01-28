@@ -177,11 +177,37 @@ export default class StripeService extends Service {
   }
 
   /**
-   * Collect the bank account information for setup.
+   * Collect the bank token from the user.
+   *
+   * @param clientSecret
+   * @return StripeBankAccountToken
+   */
+  async collectBankAccountToken (clientSecret) {
+    const stripe = await this.getStripe ();
+    const result = await stripe.collectBankAccountToken ({ clientSecret });
+
+    if (isPresent (result.error)) {
+      throw result.error;
+    }
+
+    // Transform the payload into a stripe payment intent object.
+    const modelClass = this.store.modelFor('stripe-bank-account-token');
+    const serializer = this.store.serializerFor('stripe-bank-account-token');
+    const data = serializer.normalizeSaveResponse(
+      this.store,
+      modelClass,
+      result
+    );
+
+    return this.store.push (data);
+  }
+
+  /**
+   * Collect the bank account for setup.
    *
    * @param clientSecret
    * @param params
-   * @return StripeSetupIntentModel
+   * @return StripeSetupIntent
    */
   async collectBankAccountForSetup (clientSecret, params) {
     const stripe = await this.getStripe ();
