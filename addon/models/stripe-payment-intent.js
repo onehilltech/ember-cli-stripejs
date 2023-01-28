@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class StripePaymentIntentModel extends Model {
   @attr ('number')
@@ -30,4 +30,7 @@ export default class StripePaymentIntentModel extends Model {
 
   @attr
   status;
+
+  @belongsTo('stripe-payment-method')
+  paymentMethod
 }

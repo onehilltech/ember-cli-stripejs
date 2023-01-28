@@ -177,6 +177,29 @@ export default class StripeService extends Service {
   }
 
   /**
+   * Collect the bank account information for setup.
+   *
+   * @param clientSecret
+   * @param params
+   * @return StripeSetupIntentModel
+   */
+  async collectBankAccountForSetup (clientSecret, params) {
+    const stripe = await this.getStripe ();
+    const payload = await stripe.collectBankAccountForSetup ( { clientSecret, params });
+
+    // Transform the payload into a stripe payment intent object.
+    const modelClass = this.store.modelFor('stripe-setup-intent');
+    const serializer = this.store.serializerFor('stripe-setup-intent');
+    const data = serializer.normalizeSaveResponse(
+      this.store,
+      modelClass,
+      payload
+    );
+
+    return this.store.push (data);
+  }
+
+  /**
    * Create a payment requests objects for Apple Pay or the standard payment request
    * API.
    *
