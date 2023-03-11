@@ -190,6 +190,10 @@ export default class StripeService extends Service {
       throw result.error;
     }
 
+    if (!result.token) {
+      return null;
+    }
+
     // Transform the payload into a stripe payment intent object.
     const modelClass = this.store.modelFor('stripe-bank-account-token');
     const serializer = this.store.serializerFor('stripe-bank-account-token');
@@ -211,7 +215,11 @@ export default class StripeService extends Service {
    */
   async collectBankAccountForSetup (clientSecret, params) {
     const stripe = await this.getStripe ();
-    const payload = await stripe.collectBankAccountForSetup ( { clientSecret, params });
+    const result = await stripe.collectBankAccountForSetup ( { clientSecret, params });
+
+    if (isPresent (result.error)) {
+      throw result.error;
+    }
 
     // Transform the payload into a stripe payment intent object.
     const modelClass = this.store.modelFor('stripe-setup-intent');
@@ -219,7 +227,7 @@ export default class StripeService extends Service {
     const data = serializer.normalizeSaveResponse(
       this.store,
       modelClass,
-      payload
+      result
     );
 
     return this.store.push (data);
