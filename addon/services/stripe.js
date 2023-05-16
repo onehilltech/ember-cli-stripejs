@@ -137,7 +137,7 @@ export default class StripeService extends Service {
       options
     );
 
-    return this._savePaymentIntentPayload (payload);
+    return this._handlePaymentIntentResult (payload);
   }
 
   /**
@@ -160,10 +160,33 @@ export default class StripeService extends Service {
 
     const payload = await stripe.confirmCashappPayment (clientSecret, data, options);
 
-    return this._savePaymentIntentPayload (payload);
+    return this._handlePaymentIntentResult (payload);
   }
 
-  _savePaymentIntentPayload (payload) {
+  /**
+   * Confirm a bank account payment.
+   *
+   * @param clientSecret          The client secret for a payment intent.
+   * @param data                  Data for confirming the payment.
+   * @returns {*}
+   * @private
+   */
+  async confirmUsBankAccountPayment (clientSecret, data) {
+    const stripe = this.getStripe ();
+    const result = await stripe.confirmUsBankAccountPayment (clientSecret, data);
+
+    return this._handlePaymentIntentResult (result);
+  }
+
+  _handlePaymentIntentResult (payload) {
+    if (isPresent (payload.error)) {
+      throw payload.error;
+    }
+
+    if (!payload.paymentIntent) {
+      return null;
+    }
+
     // Transform the payload into a stripe payment intent object.
     const modelClass = this.store.modelFor('stripe-payment-intent');
     const serializer = this.store.serializerFor('stripe-payment-intent');
@@ -201,6 +224,27 @@ export default class StripeService extends Service {
     );
 
     return this.store.push(data);
+  }
+
+  /**
+   * Collect bank account information for a payment.
+   *
+   * @param clientSecret          The client secret for a payment intent
+   * @param billingDetails        Billing details for the payment method
+   */
+  async collectBankAccountForPayment (clientSecret, billingDetails) {
+    const stripe = await this.getStripe ();
+    const result = await stripe.collectBankAccountForPayment ({
+      client_secret: clientSecret,
+      params: {
+        payment_method_type: 'us_bank_account',
+        payment_method_data: {
+          billing_details: billingDetails
+        }
+      }
+    });
+
+    return this._handlePaymentIntentResult (result);
   }
 
   /**
