@@ -126,14 +126,14 @@ export default class StripeService extends Service {
    * Confirm an existing card payment.
    *
    * @param clientSecret
-   * @param payment
+   * @param data
    * @param options
    */
-  async confirmCardPayment (clientSecret, payment, options) {
+  async confirmCardPayment (clientSecret, data, options = {}) {
     const stripe = await this.getStripe();
     const payload = await stripe.confirmCardPayment(
       clientSecret,
-      payment,
+      data,
       options
     );
 
@@ -148,9 +148,15 @@ export default class StripeService extends Service {
    * @param options
    * @returns {Promise<*>}
    */
-  async confirmCashappPayment (clientSecret, data, options) {
+  async confirmCashappPayment (clientSecret, data = {}, options = {}) {
     const stripe = await this.getStripe();
-    data = Object.assign ({}, data, {  payment_method: { type: 'cashapp' }});
+
+    // Automatically add the cashapp payment type to the data.
+    if (!data.payment_method) {
+      data.payment_method = {};
+    }
+
+    data.payment_method.type = 'cashapp';
 
     const payload = await stripe.confirmCashappPayment (clientSecret, data, options);
 
