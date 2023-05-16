@@ -129,7 +129,7 @@ export default class StripeService extends Service {
    * @param payment
    * @param options
    */
-  async confirmCardPayment(clientSecret, payment, options) {
+  async confirmCardPayment (clientSecret, payment, options) {
     const stripe = await this.getStripe();
     const payload = await stripe.confirmCardPayment(
       clientSecret,
@@ -137,6 +137,29 @@ export default class StripeService extends Service {
       options
     );
 
+    return this._savePaymentIntentPayload (payload);
+  }
+
+  /**
+   * Confirm a cashapp payment.
+   *
+   * @param clientSecret
+   * @param payment
+   * @param options
+   * @returns {Promise<*>}
+   */
+  async confirmCashappPayment (clientSecret, payment, options) {
+    const stripe = await this.getStripe();
+    const payload = await stripe.confirmCashappPayment(
+      clientSecret,
+      payment,
+      options
+    );
+
+    return this._savePaymentIntentPayload (payload);
+  }
+
+  _savePaymentIntentPayload (payload) {
     // Transform the payload into a stripe payment intent object.
     const modelClass = this.store.modelFor('stripe-payment-intent');
     const serializer = this.store.serializerFor('stripe-payment-intent');
