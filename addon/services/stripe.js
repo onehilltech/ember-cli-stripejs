@@ -235,7 +235,7 @@ export default class StripeService extends Service {
   async collectBankAccountForPayment (clientSecret, billingDetails) {
     const stripe = await this.getStripe ();
     const result = await stripe.collectBankAccountForPayment ({
-      client_secret: clientSecret,
+      clientSecret: clientSecret,
       params: {
         payment_method_type: 'us_bank_account',
         payment_method_data: {
