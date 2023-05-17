@@ -172,7 +172,7 @@ export default class StripeService extends Service {
    * @private
    */
   async confirmUsBankAccountPayment (clientSecret, data) {
-    const stripe = this.getStripe ();
+    const stripe = await this.getStripe ();
     const result = await stripe.confirmUsBankAccountPayment (clientSecret, data);
 
     return this._handlePaymentIntentResult (result);
