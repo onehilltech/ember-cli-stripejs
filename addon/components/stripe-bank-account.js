@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { tracked } from "@glimmer/tracking";
+import { tracked } from '@glimmer/tracking';
 
-function noOp () { }
+function noOp() {}
 
 export default class StripeBankAccountComponent extends Component {
   @service
@@ -25,55 +25,55 @@ export default class StripeBankAccountComponent extends Component {
   accountHolderType;
 
   @action
-  setAccountHolderType (accountHolderType) {
+  setAccountHolderType(accountHolderType) {
     this.accountHolderType = accountHolderType;
   }
 
-  get accountHolderTypeOptions () {
+  get accountHolderTypeOptions() {
     return [
-      { value: 'individual', text: 'Individual'},
-      { value: 'company', text: 'Company' }
+      { value: 'individual', text: 'Individual' },
+      { value: 'company', text: 'Company' },
     ];
   }
 
-  get submitButtonDisabled () {
+  get submitButtonDisabled() {
     return !this.valid;
   }
 
-  get submitButtonLabel () {
+  get submitButtonLabel() {
     return this.args.submitButtonLabel || 'Submit';
   }
 
   @action
-  async submit () {
+  async submit() {
     const data = {
       country: 'US',
       currency: 'usd',
       routing_number: this.routingNumber,
       account_number: this.accountNumber,
       account_holder_name: this.accountHolderName,
-      account_holder_type: this.accountHolderType.value
+      account_holder_type: this.accountHolderType.value,
     };
 
     // Notify the client we are creating a token.
-    this.creating ();
+    this.creating();
 
-    const { token } = await this.stripe.createToken ('bank_account', data);
+    const { token } = await this.stripe.createToken('bank_account', data);
 
     // Notify the client we have created the token.
-    this.created (token);
+    this.created(token);
   }
 
   @action
-  validity (valid) {
+  validity(valid) {
     this.valid = valid;
   }
 
-  get creating () {
+  get creating() {
     return this.args.creating || noOp;
   }
 
-  get created () {
+  get created() {
     return this.args.created || noOp;
   }
 }

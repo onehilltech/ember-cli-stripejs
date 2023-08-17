@@ -41,23 +41,23 @@ export default class StripeExternalAccountFragment extends Fragment {
   @attr
   status;
 
-  get isNew () {
+  get isNew() {
     return this.status === 'new';
   }
 
-  get isValidated () {
+  get isValidated() {
     return this.status === 'validated';
   }
 
-  get isVerified () {
+  get isVerified() {
     return this.status === 'verified';
   }
 
-  get isVerificationFailed () {
+  get isVerificationFailed() {
     return this.status === 'verification_failed';
   }
 
-  get isErrored () {
+  get isErrored() {
     return this.status === 'errored';
   }
 
@@ -70,31 +70,34 @@ export default class StripeExternalAccountFragment extends Fragment {
   /**
    * Make this account the default for its currency.
    */
-  update = memberAction ({
+  update = memberAction({
     type: 'put',
     urlType: 'updateRecord',
 
-    after (response) {
+    after(response) {
       const { external_account } = response;
 
       if (external_account) {
         const modelName = this.constructor.modelName;
         const store = this.store;
-        const primaryModelClass = store.modelFor (modelName);
-        const serializer = store.serializerFor (modelName);
+        const primaryModelClass = store.modelFor(modelName);
+        const serializer = store.serializerFor(modelName);
 
-        const { data } = serializer.normalize (primaryModelClass, external_account);
+        const { data } = serializer.normalize(
+          primaryModelClass,
+          external_account
+        );
 
-        this.setProperties (data.attributes);
+        this.setProperties(data.attributes);
       }
-    }
+    },
   });
 
   /**
    * Remove an external account from the merchant account.
    */
-  remove = memberAction ({
+  remove = memberAction({
     type: 'delete',
-    urlType: 'deleteRecord'
+    urlType: 'deleteRecord',
   });
 }

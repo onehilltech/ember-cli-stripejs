@@ -110,16 +110,20 @@ export default class StripeService extends Service {
    * @param ev
    * @return {Promise<void>}
    */
-  savePaymentMethod (ev) {
+  savePaymentMethod(ev) {
     const { paymentMethod } = ev;
     const payload = { 'stripe-payment-method': paymentMethod };
 
     // Transform the payload into a stripe payment method object.
     const modelClass = this.store.modelFor('stripe-payment-method');
     const serializer = this.store.serializerFor('stripe-payment-method');
-    const data = serializer.normalizeSaveResponse (this.store, modelClass, payload);
+    const data = serializer.normalizeSaveResponse(
+      this.store,
+      modelClass,
+      payload
+    );
 
-    return this.store.push (data);
+    return this.store.push(data);
   }
 
   /**
@@ -129,7 +133,7 @@ export default class StripeService extends Service {
    * @param data
    * @param options
    */
-  async confirmCardPayment (clientSecret, data, options = {}) {
+  async confirmCardPayment(clientSecret, data, options = {}) {
     const stripe = await this.getStripe();
     const payload = await stripe.confirmCardPayment(
       clientSecret,
@@ -137,7 +141,7 @@ export default class StripeService extends Service {
       options
     );
 
-    return this._handlePaymentIntentResult (payload);
+    return this._handlePaymentIntentResult(payload);
   }
 
   /**
@@ -148,7 +152,7 @@ export default class StripeService extends Service {
    * @param options
    * @returns {Promise<*>}
    */
-  async confirmCashappPayment (clientSecret, data = {}, options = {}) {
+  async confirmCashappPayment(clientSecret, data = {}, options = {}) {
     const stripe = await this.getStripe();
 
     // Automatically add the cashapp payment type to the data.
@@ -158,9 +162,13 @@ export default class StripeService extends Service {
 
     data.payment_method.type = 'cashapp';
 
-    const payload = await stripe.confirmCashappPayment (clientSecret, data, options);
+    const payload = await stripe.confirmCashappPayment(
+      clientSecret,
+      data,
+      options
+    );
 
-    return this._handlePaymentIntentResult (payload);
+    return this._handlePaymentIntentResult(payload);
   }
 
   /**
@@ -171,15 +179,15 @@ export default class StripeService extends Service {
    * @returns {*}
    * @private
    */
-  async confirmUsBankAccountPayment (clientSecret, data) {
-    const stripe = await this.getStripe ();
-    const result = await stripe.confirmUsBankAccountPayment (clientSecret, data);
+  async confirmUsBankAccountPayment(clientSecret, data) {
+    const stripe = await this.getStripe();
+    const result = await stripe.confirmUsBankAccountPayment(clientSecret, data);
 
-    return this._handlePaymentIntentResult (result);
+    return this._handlePaymentIntentResult(result);
   }
 
-  _handlePaymentIntentResult (payload) {
-    if (isPresent (payload.error)) {
+  _handlePaymentIntentResult(payload) {
+    if (isPresent(payload.error)) {
       throw payload.error;
     }
 
@@ -232,19 +240,19 @@ export default class StripeService extends Service {
    * @param clientSecret          The client secret for a payment intent
    * @param billingDetails        Billing details for the payment method
    */
-  async collectBankAccountForPayment (clientSecret, billingDetails) {
-    const stripe = await this.getStripe ();
-    const result = await stripe.collectBankAccountForPayment ({
+  async collectBankAccountForPayment(clientSecret, billingDetails) {
+    const stripe = await this.getStripe();
+    const result = await stripe.collectBankAccountForPayment({
       clientSecret: clientSecret,
       params: {
         payment_method_type: 'us_bank_account',
         payment_method_data: {
-          billing_details: billingDetails
-        }
-      }
+          billing_details: billingDetails,
+        },
+      },
     });
 
-    return this._handlePaymentIntentResult (result);
+    return this._handlePaymentIntentResult(result);
   }
 
   /**
@@ -253,11 +261,11 @@ export default class StripeService extends Service {
    * @param clientSecret
    * @return StripeBankAccountToken
    */
-  async collectBankAccountToken (clientSecret) {
-    const stripe = await this.getStripe ();
-    const result = await stripe.collectBankAccountToken ({ clientSecret });
+  async collectBankAccountToken(clientSecret) {
+    const stripe = await this.getStripe();
+    const result = await stripe.collectBankAccountToken({ clientSecret });
 
-    if (isPresent (result.error)) {
+    if (isPresent(result.error)) {
       throw result.error;
     }
 
@@ -274,7 +282,7 @@ export default class StripeService extends Service {
       result
     );
 
-    return this.store.push (data);
+    return this.store.push(data);
   }
 
   /**
@@ -284,11 +292,14 @@ export default class StripeService extends Service {
    * @param params
    * @return StripeSetupIntent
    */
-  async collectBankAccountForSetup (clientSecret, params) {
-    const stripe = await this.getStripe ();
-    const result = await stripe.collectBankAccountForSetup ( { clientSecret, params });
+  async collectBankAccountForSetup(clientSecret, params) {
+    const stripe = await this.getStripe();
+    const result = await stripe.collectBankAccountForSetup({
+      clientSecret,
+      params,
+    });
 
-    if (isPresent (result.error)) {
+    if (isPresent(result.error)) {
       throw result.error;
     }
 
@@ -301,7 +312,7 @@ export default class StripeService extends Service {
       result
     );
 
-    return this.store.push (data);
+    return this.store.push(data);
   }
 
   /**
@@ -328,14 +339,19 @@ export default class StripeService extends Service {
     let { publishableKey } = this.config;
 
     if (this._developerMode && this.config.developer) {
-      const { developer: { publishableKey: key } } = this.config;
+      const {
+        developer: { publishableKey: key },
+      } = this.config;
 
-      if (isPresent (key)) {
+      if (isPresent(key)) {
         publishableKey = key;
-      }
-      else {
-        console.warn ('You have enabled developer mode, but have not set the developer test key.');
-        console.warn ('Using the production key instead of the developer test key.');
+      } else {
+        console.warn(
+          'You have enabled developer mode, but have not set the developer test key.'
+        );
+        console.warn(
+          'Using the production key instead of the developer test key.'
+        );
       }
     }
 

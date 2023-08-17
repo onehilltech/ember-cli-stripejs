@@ -11,9 +11,9 @@ export default class StripeSetupIntentModel extends Model {
   lastSetupError;
 
   @attr
-  nextAction
+  nextAction;
 
-  @belongsTo ('stripe-payment-method')
+  @belongsTo('stripe-payment-method')
   paymentMethod;
 
   @attr

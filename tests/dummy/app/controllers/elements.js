@@ -1,18 +1,18 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { tracked } from "@glimmer/tracking";
+import { tracked } from '@glimmer/tracking';
 
 export default class ElementsController extends Controller {
   @tracked
   clearCard;
 
   @action
-  didCardChange (card) {
-    console.log (card);
+  didCardChange(card) {
+    console.log(card);
   }
 
   @action
-  doClearCard () {
+  doClearCard() {
     this.clearCard = true;
   }
 }

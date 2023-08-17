@@ -8,7 +8,7 @@ export default class StripePaymentMethodModel extends Model {
   @attr
   type;
 
-  @fragment ('stripe-card')
+  @fragment('stripe-card')
   card;
 
   @attr

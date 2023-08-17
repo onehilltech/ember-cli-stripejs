@@ -1,18 +1,19 @@
-import StripeTokenAdapter from "./stripe-token";
+import StripeTokenAdapter from './stripe-token';
 import { InvalidError } from '@ember-data/adapter';
 
 export default class StripeBankAccountTokenAdapter extends StripeTokenAdapter {
-  createRecord (store, type, snapshot) {
-    let serializer = store.serializerFor (type.modelName);
-    let data = serializer.serialize (snapshot);
+  createRecord(store, type, snapshot) {
+    let serializer = store.serializerFor(type.modelName);
+    let data = serializer.serialize(snapshot);
 
-    return this.stripe.createToken ('bank_account', data)
-      .then (result => this.handleResponse (200, null, result, data));
+    return this.stripe
+      .createToken('bank_account', data)
+      .then((result) => this.handleResponse(200, null, result, data));
   }
 
-  handleResponse (status, headers, payload) {
+  handleResponse(status, headers, payload) {
     if (status === 200) {
-      return super.handleResponse (...arguments);
+      return super.handleResponse(...arguments);
     }
 
     switch (status) {
@@ -21,19 +22,19 @@ export default class StripeBankAccountTokenAdapter extends StripeTokenAdapter {
           if (payload.error.type === 'invalid_request_error') {
             switch (payload.error.code) {
               case 'account_number_invalid':
-                return new InvalidError ([
+                return new InvalidError([
                   {
                     detail: payload.error.message,
-                    source: {pointer: '/data/attributes/account_number'}
-                  }
+                    source: { pointer: '/data/attributes/account_number' },
+                  },
                 ]);
 
               case 'routing_number_invalid':
-                return new InvalidError ([
+                return new InvalidError([
                   {
                     detail: payload.error.message,
-                    source: {pointer: '/data/attributes/routing_number'}
-                  }
+                    source: { pointer: '/data/attributes/routing_number' },
+                  },
                 ]);
             }
           }
@@ -42,6 +43,6 @@ export default class StripeBankAccountTokenAdapter extends StripeTokenAdapter {
         break;
     }
 
-    return super.handleResponse (...arguments);
+    return super.handleResponse(...arguments);
   }
 }

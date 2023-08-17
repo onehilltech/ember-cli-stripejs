@@ -1,16 +1,19 @@
 import Fragment from 'ember-data-model-fragments/fragment';
 import { attr } from '@ember-data/model';
 
-import { fragmentArray, fragmentOwner } from 'ember-data-model-fragments/attributes';
+import {
+  fragmentArray,
+  fragmentOwner,
+} from 'ember-data-model-fragments/attributes';
 
 export default class StripeExternalAccountsFragment extends Fragment {
-  @fragmentArray ('stripe-external-account')
+  @fragmentArray('stripe-external-account')
   items;
 
-  @attr ('boolean')
+  @attr('boolean')
   hasMore;
 
-  @attr ('number')
+  @attr('number')
   totalCount;
 
   @attr

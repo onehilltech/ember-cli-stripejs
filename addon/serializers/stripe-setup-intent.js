@@ -1,7 +1,7 @@
-import ApplicationSerializer from "./application";
+import ApplicationSerializer from './application';
 
 export default class StripeSetupIntentSerializer extends ApplicationSerializer {
-  modelNameFromPayloadKey (key) {
+  modelNameFromPayloadKey(key) {
     return key === 'setupIntent' ? 'stripe-setup-intent' : key;
   }
 }

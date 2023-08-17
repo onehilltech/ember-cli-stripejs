@@ -4,19 +4,19 @@ import { attr } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
 
 export default class StripeCompanyFragment extends Fragment {
-  @fragment ('stripe-address')
+  @fragment('stripe-address')
   address;
 
   @attr
   phone;
 
-  @attr ('boolean', {serialize: false})
+  @attr('boolean', { serialize: false })
   directorsProvided;
 
-  @attr ('boolean', {serialize: false})
+  @attr('boolean', { serialize: false })
   executivesProvided;
 
-  @attr ('boolean', {serialize: false})
+  @attr('boolean', { serialize: false })
   ownersProvided;
 
   @attr
@@ -30,10 +30,10 @@ export default class StripeCompanyFragment extends Fragment {
   @attr
   taxId;
 
-  @attr ('boolean', {serialize: false})
+  @attr('boolean', { serialize: false })
   taxIdProvided;
 
-  get taxIdNotProvided () {
+  get taxIdNotProvided() {
     return !this.taxIdProvided;
   }
 }

@@ -1,10 +1,10 @@
 import { fragment } from 'ember-data-model-fragments/attributes';
 import { isPresent } from '@ember/utils';
-import { attr } from "@ember-data/model";
+import { attr } from '@ember-data/model';
 import Fragment from 'ember-data-model-fragments/fragment';
 
 export default class StripePersonFragment extends Fragment {
-  @attr ('stripe-date')
+  @attr('stripe-date')
   created;
 
   @attr
@@ -16,27 +16,26 @@ export default class StripePersonFragment extends Fragment {
   @attr
   lastName;
 
-  set name (value) {
-    if (isPresent (value)) {
-      [this.firstName, this.lastName] = value.split (' ');
-    }
-    else {
+  set name(value) {
+    if (isPresent(value)) {
+      [this.firstName, this.lastName] = value.split(' ');
+    } else {
       this.firstName = this.lastName = null;
     }
   }
 
-  get name () {
+  get name() {
     let parts = [];
 
-    if (isPresent (this.firstName)) {
-      parts.push (this.firstName);
+    if (isPresent(this.firstName)) {
+      parts.push(this.firstName);
     }
 
-    if (isPresent (this.lastName)) {
-      parts.push (this.lastName);
+    if (isPresent(this.lastName)) {
+      parts.push(this.lastName);
     }
 
-    return parts.join (' ');
+    return parts.join(' ');
   }
 
   @attr
@@ -63,12 +62,12 @@ export default class StripePersonFragment extends Fragment {
   @attr
   ssnLast4;
 
-  @attr ({ serialize: false })
+  @attr({ serialize: false })
   ssnLast4Provided;
 
   @attr
   idNumber;
 
-  @attr ('boolean')
+  @attr('boolean')
   idNumberProvided;
 }

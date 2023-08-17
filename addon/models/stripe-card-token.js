@@ -1,94 +1,104 @@
-import StripeTokenModel from "./stripe-token";
+import StripeTokenModel from './stripe-token';
 
 import { attr } from '@ember-data/model';
 import { isPresent } from '@ember/utils';
 
 export default class StripeCardTokenModel extends StripeTokenModel {
-  @attr ('string')
+  @attr('string')
   number;
 
-  @attr ('string')
+  @attr('string')
   last4;
 
-  @attr ('string')
+  @attr('string')
   cvc;
 
-  @attr ('string')
+  @attr('string')
   cvcCheck;
 
-  get cvcFail () {
+  get cvcFail() {
     return this.cvcCheck === 'fail';
   }
 
-  get cvcPass () {
+  get cvcPass() {
     return this.cvcCheck === 'pass';
   }
 
-  get cvcUnchecked () {
+  get cvcUnchecked() {
     return this.cvcCheck === 'unchecked';
   }
 
-  get cvcUnavailable () {
+  get cvcUnavailable() {
     return this.cvcCheck === 'unavailable';
   }
 
-  @attr ('number')
+  @attr('number')
   expMonth;
 
-  @attr ('number')
+  @attr('number')
   expYear;
 
-  get expiry () {
+  get expiry() {
     const { expMonth, expYear } = this;
-    return isPresent (expMonth) && isPresent (expYear) ? `${expMonth}/${expYear.toString ().slice (-2)}` : null;
+    return isPresent(expMonth) && isPresent(expYear)
+      ? `${expMonth}/${expYear.toString().slice(-2)}`
+      : null;
   }
 
-  get expiryFullYear () {
+  get expiryFullYear() {
     const { expMonth, expYear } = this;
-    return isPresent (expMonth) && isPresent (expYear) ? `${expMonth}/${expYear}` : null
+    return isPresent(expMonth) && isPresent(expYear)
+      ? `${expMonth}/${expYear}`
+      : null;
   }
 
-  @attr ('string')
+  @attr('string')
   name;
 
-  @attr ('string')
+  @attr('string')
   brand;
 
-  @attr ('country')
+  @attr('country')
   country;
 
-  @attr ('string')
+  @attr('string')
   funding;
 
-  @attr ('string')
+  @attr('string')
   addressCity;
 
-  @attr ('string')
+  @attr('string')
   addressCountry;
 
-  @attr ('string')
+  @attr('string')
   addressLine1;
 
-  @attr ('boolean')
+  @attr('boolean')
   addressLine1Check;
 
-  @attr ('string')
+  @attr('string')
   addressLine2;
 
-  @attr ('string')
+  @attr('string')
   addressState;
 
-  @attr ('string')
+  @attr('string')
   addressZip;
 
-  @attr ('boolean')
+  @attr('boolean')
   addressZipCheck;
 
-  get description () {
+  get description() {
     return `${this.brand} - ${this.funding} (ending in ${this.last4})`;
   }
 
-  get isComplete () {
-    return isPresent (this.name) && isPresent (this.number) && isPresent (this.cvc) && isPresent (this.expMonth) && isPresent (this.expYear);
+  get isComplete() {
+    return (
+      isPresent(this.name) &&
+      isPresent(this.number) &&
+      isPresent(this.cvc) &&
+      isPresent(this.expMonth) &&
+      isPresent(this.expYear)
+    );
   }
 }

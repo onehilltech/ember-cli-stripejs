@@ -1,54 +1,54 @@
-import StripeTokenModel from "./stripe-token";
+import StripeTokenModel from './stripe-token';
 import { attr } from '@ember-data/model';
 
 export default class StripeBankAccountTokenModel extends StripeTokenModel {
-  @attr ('string')
+  @attr('string')
   accountHolderName;
 
-  @attr ('string')
+  @attr('string')
   accountHolderType;
 
-  @attr ('string')
+  @attr('string')
   bankName;
 
-  @attr ('string')
+  @attr('string')
   country;
 
-  @attr ('string')
+  @attr('string')
   currency;
 
-  @attr ('string')
+  @attr('string')
   fingerprint;
 
-  @attr ('string')
+  @attr('string')
   accountNumber;
 
-  @attr ('string')
+  @attr('string')
   last4;
 
-  @attr ('string')
+  @attr('string')
   routingNumber;
 
-  @attr ('string')
+  @attr('string')
   status;
 
-  get isNewAccount () {
+  get isNewAccount() {
     return this.status === 'new';
   }
 
-  get isVerified () {
+  get isVerified() {
     return this.status === 'verified';
   }
 
-  get isValidated () {
+  get isValidated() {
     return this.status === 'validated';
   }
 
-  get errored () {
+  get errored() {
     return this.status === 'errored';
   }
 
-  get verificationFailed () {
+  get verificationFailed() {
     return this.status === 'verification_failed';
   }
 }

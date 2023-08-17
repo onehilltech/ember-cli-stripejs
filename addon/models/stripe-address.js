@@ -23,65 +23,70 @@ export default class StripeAddressFragment extends MF.Fragment {
   @attr
   country;
 
-  get full () {
+  get full() {
     let address = '';
 
-    if (isPresent (this.line1)) {
+    if (isPresent(this.line1)) {
       address += this.line1;
     }
 
-    if (isPresent (this.line2)) {
+    if (isPresent(this.line2)) {
       address += ` ${this.line2}`;
     }
 
-    if (isPresent (this.city)) {
+    if (isPresent(this.city)) {
       address += `, ${this.city}`;
     }
 
-    if (isPresent (this.state)) {
+    if (isPresent(this.state)) {
       address += `, ${this.state}`;
     }
 
-    if (isPresent (this.postalCode)) {
+    if (isPresent(this.postalCode)) {
       address += ` ${this.postalCode}`;
     }
 
-    if (isPresent (this.country)) {
+    if (isPresent(this.country)) {
       address += ` ${this.country}`;
     }
 
     return address;
   }
 
-  set full (value) {
-    if (isPresent (value)) {
-      let parsed = parser.parseLocation (value);
+  set full(value) {
+    if (isPresent(value)) {
+      let parsed = parser.parseLocation(value);
 
       let lineParts = [];
 
-      if (isPresent (parsed.number)) {
-        lineParts.push (parsed.number);
+      if (isPresent(parsed.number)) {
+        lineParts.push(parsed.number);
       }
 
-      if (isPresent (parsed.prefix)) {
-        lineParts.push (parsed.prefix);
+      if (isPresent(parsed.prefix)) {
+        lineParts.push(parsed.prefix);
       }
 
-      if (isPresent (parsed.street)) {
-        lineParts.push (parsed.street);
+      if (isPresent(parsed.street)) {
+        lineParts.push(parsed.street);
       }
 
-      if (isPresent (parsed.type)) {
-        lineParts.push (parsed.type);
+      if (isPresent(parsed.type)) {
+        lineParts.push(parsed.type);
       }
 
-      this.line1 = lineParts.join (' ');
+      this.line1 = lineParts.join(' ');
       this.city = parsed.city;
       this.state = parsed.state;
       this.postalCode = parsed.zip;
-    }
-    else {
-      this.city = this.country = this.line1 = this.line2 = this.postalCode = this.state = null;
+    } else {
+      this.city =
+        this.country =
+        this.line1 =
+        this.line2 =
+        this.postalCode =
+        this.state =
+          null;
     }
   }
 }

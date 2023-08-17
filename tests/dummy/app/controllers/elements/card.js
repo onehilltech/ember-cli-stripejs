@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { tracked } from "@glimmer/tracking";
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class ElementsCardController extends Controller {
@@ -19,33 +19,33 @@ export default class ElementsCardController extends Controller {
   paymentMethod;
 
   @action
-  change (card) {
-    console.log (card);
+  change(card) {
+    console.log(card);
   }
 
   @action
-  doClear () {
+  doClear() {
     this.clear = true;
     this.token = null;
   }
 
   @action
-  doCreateToken () {
+  doCreateToken() {
     this.create = true;
   }
 
   @action
-  doCreatePaymentMethod () {
+  doCreatePaymentMethod() {
     this.createPaymentMethod = true;
   }
 
   @action
-  created (token) {
+  created(token) {
     this.token = token;
   }
 
   @action
-  paymentMethodCreated (paymentMethod) {
+  paymentMethodCreated(paymentMethod) {
     this.paymentMethod = paymentMethod;
   }
 }

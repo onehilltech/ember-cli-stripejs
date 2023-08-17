@@ -18,7 +18,7 @@ export default class StripeRequirementsFragment extends MF.Fragment {
   @array('string')
   pendingVerification;
 
-  get isDue () {
-    return isPresent (this.pastDue) || isPresent (this.currentlyDue);
+  get isDue() {
+    return isPresent(this.pastDue) || isPresent(this.currentlyDue);
   }
 }

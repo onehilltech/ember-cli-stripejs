@@ -1,18 +1,18 @@
 import Model, { attr } from '@ember-data/model';
 
 export default class StripeTokenModel extends Model {
-  @attr ('string')
+  @attr('string')
   type;
 
-  @attr ('string')
+  @attr('string')
   clientIp;
 
-  @attr ('date')
+  @attr('date')
   created;
 
-  @attr ('boolean')
+  @attr('boolean')
   liveMode;
 
-  @attr ('boolean')
+  @attr('boolean')
   used;
 }

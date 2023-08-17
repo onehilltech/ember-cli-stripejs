@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { tracked } from "@glimmer/tracking";
+import { tracked } from '@glimmer/tracking';
 
 export default class CustomController extends Controller {
   @tracked
@@ -13,15 +13,18 @@ export default class CustomController extends Controller {
   bankAccountToken;
 
   @action
-  saveBankAccount (ev) {
-    ev.preventDefault ();
+  saveBankAccount(ev) {
+    ev.preventDefault();
 
-    this.bankAccountToken = this.store.createRecord ('stripe-bank-account-token', {
-      accountNumber: this.accountNumber,
-      routingNumber: this.routingNumber,
-      country: 'US'
-    });
+    this.bankAccountToken = this.store.createRecord(
+      'stripe-bank-account-token',
+      {
+        accountNumber: this.accountNumber,
+        routingNumber: this.routingNumber,
+        country: 'US',
+      }
+    );
 
-    this.bankAccountToken.save ();
+    this.bankAccountToken.save();
   }
 }

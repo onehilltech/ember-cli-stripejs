@@ -1,10 +1,13 @@
-import Model, { attr } from '@ember-data/model';
-
+import Fragment from 'ember-data-model-fragments/fragment';
 import { fragment, fragmentArray } from 'ember-data-model-fragments/attributes';
+
+import { attr } from '@ember-data/model';
+
 import { memberAction } from 'ember-api-actions';
 import { serializeAndPush } from 'ember-blueprint-data';
 
-export default class StripeAccountModel extends Model {
+
+export default class StripeAccountFragment extends Fragment {
   @attr('stripe-date')
   created;
 

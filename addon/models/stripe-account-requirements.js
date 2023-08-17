@@ -26,4 +26,3 @@ export default class StripeAccountRequirementsFragment extends MF.Fragment {
   @attr
   pendingVerification;
 }
-

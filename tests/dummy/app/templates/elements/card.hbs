@@ -6,9 +6,9 @@
                      @token={{hash create=this.create callback=this.created}}
                      @paymentMethod={{hash create=this.createPaymentMethod callback=this.paymentMethodCreated}} />
   <div class="actions">
-    <button {{on "click" this.doClear}}>Clear</button>
-    <button {{on "click" this.doCreateToken}}>Create token</button>
-    <button {{on "click" this.doCreatePaymentMethod}}>Create payment method</button>
+    <button type="button" {{on "click" this.doClear}}>Clear</button>
+    <button type="button" {{on "click" this.doCreateToken}}>Create token</button>
+    <button type="button" {{on "click" this.doCreatePaymentMethod}}>Create payment method</button>
 
   </div>
 </div>

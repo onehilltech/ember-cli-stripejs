@@ -23,7 +23,7 @@ module.exports = function (environment) {
     },
     stripe: {
       publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-    }
+    },
   };
 
   if (environment === 'development') {

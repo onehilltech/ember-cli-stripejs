@@ -1,4 +1,3 @@
-import ApplicationAdapter from "./application";
+import ApplicationAdapter from './application';
 
-export default class StripeSetupIntentAdapter extends ApplicationAdapter {
-}
+export default class StripeSetupIntentAdapter extends ApplicationAdapter {}

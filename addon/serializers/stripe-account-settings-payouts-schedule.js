@@ -13,18 +13,18 @@ export default class StripeAccountSettingsPayoutsScheduleSerializer extends Appl
     switch (key) {
       case 'monthlyAnchor':
       case 'weeklyAnchor':
-        if (isPresent (snapshot.attr (key))) {
-          super.serializeAttribute (...arguments);
+        if (isPresent(snapshot.attr(key))) {
+          super.serializeAttribute(...arguments);
 
           // We are always going to serialize the interval as well.
-          if (isNone (json['interval'])) {
-            json['interval'] = snapshot.attr ('interval');
+          if (isNone(json['interval'])) {
+            json['interval'] = snapshot.attr('interval');
           }
         }
         break;
 
       default:
-        super.serializeAttribute (...arguments);
+        super.serializeAttribute(...arguments);
     }
   }
 }

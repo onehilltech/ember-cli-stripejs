@@ -3,8 +3,8 @@
 <h4>Bank account</h4>
 
 <form {{on "submit" this.saveBankAccount}}>
-  <Input @placeholder="Routing number" @value={{this.routingNumber}} />
-  <Input @placeholder="Account number" @value={{this.accountNumber}} />
+  <Input placeholder="Routing number" @value={{this.routingNumber}} />
+  <Input placeholder="Account number" @value={{this.accountNumber}} />
   <Input @type="submit" @value="Save" />
 </form>
 

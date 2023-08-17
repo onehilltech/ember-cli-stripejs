@@ -1,10 +1,10 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
-import { isPresent, isNone } from '@ember/utils';
+import { isPresent } from '@ember/utils';
 
 export function makePerson (Base) {
-  return class Person extends Base {
-    @attr ('stripe-date')
+  return class extends Base {
+    @attr('stripe-date')
     created;
 
     @belongsTo('stripe-account')
@@ -16,27 +16,26 @@ export function makePerson (Base) {
     @attr
     lastName;
 
-    set name (value) {
-      if (isPresent (value)) {
-        [this.firstName, this.lastName] = value.split (' ');
-      }
-      else {
+    set name(value) {
+      if (isPresent(value)) {
+        [this.firstName, this.lastName] = value.split(' ');
+      } else {
         this.firstName = this.lastName = null;
       }
     }
 
-    get name () {
+    get name() {
       let parts = [];
 
-      if (isPresent (this.firstName)) {
-        parts.push (this.firstName);
+      if (isPresent(this.firstName)) {
+        parts.push(this.firstName);
       }
 
-      if (isPresent (this.lastName)) {
-        parts.push (this.lastName);
+      if (isPresent(this.lastName)) {
+        parts.push(this.lastName);
       }
 
-      return parts.join (' ');
+      return parts.join(' ');
     }
 
     @attr
@@ -63,15 +62,15 @@ export function makePerson (Base) {
     @attr
     ssnLast4;
 
-    @attr ({ serialize: false })
+    @attr({ serialize: false })
     ssnLast4Provided;
 
     @attr
     idNumber;
 
-    @attr ('boolean')
+    @attr('boolean')
     idNumberProvided;
-  }
+  };
 }
 
 export default makePerson (Model);

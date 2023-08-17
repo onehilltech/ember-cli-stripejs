@@ -1,4 +1,3 @@
 import ApplicationSerializer from './application';
 
-export default class StripeAccountRequirementsSerializer extends ApplicationSerializer {
-}
+export default class StripeAccountRequirementsSerializer extends ApplicationSerializer {}
