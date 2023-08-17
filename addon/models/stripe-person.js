@@ -2,7 +2,7 @@ import Model, { attr, belongsTo } from '@ember-data/model';
 import { fragment } from 'ember-data-model-fragments/attributes';
 import { isPresent } from '@ember/utils';
 
-export function makePerson (Base) {
+export function makePerson(Base) {
   return class extends Base {
     @attr('stripe-date')
     created;
@@ -73,4 +73,4 @@ export function makePerson (Base) {
   };
 }
 
-export default makePerson (Model);
+export default makePerson(Model);
